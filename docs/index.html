@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="PollosBowl 2027: stats, luck, draft grades, nicknames and roasts.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>PollosBowl Gazette</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: a broadcast scorebug laid over a chalked turf field. Each segment of the "pregame show" is its own page, switched from a sticky chyron nav. */
+:root{
+  --bg:#EDF1E8; --card:#FFFFFF; --ink:#13241A; --muted:#55685B; --line:#D2DBCD;
+  --turf:#1D6A42; --turf-ink:#F4F8F1; --yolk:#F2B300; --sauce:#C9431A; --good:#1D6A42; --bad:#C9431A;
+  --qb:#2a78d6; --rb:#eb6834; --wr:#1baf7a; --te:#eda100; --k:#e87ba4; --def:#008300;
+  --display:"Bowlby One","Arial Black",Impact,sans-serif;
+  --label:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1611; --card:#142019; --ink:#E6EEE5; --muted:#97AB9C; --line:#26372C;
+  --turf:#17553A; --turf-ink:#F4F8F1; --yolk:#F6C232; --sauce:#EE6A3E; --good:#4FB37E; --bad:#EE6A3E;
+  --qb:#3987e5; --rb:#d95926; --wr:#199e70; --te:#c98500; --k:#d55181; --def:#008300; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1611; --card:#142019; --ink:#E6EEE5; --muted:#97AB9C; --line:#26372C;
+  --turf:#17553A; --turf-ink:#F4F8F1; --yolk:#F6C232; --sauce:#EE6A3E; --good:#4FB37E; --bad:#EE6A3E;
+  --qb:#3987e5; --rb:#d95926; --wr:#199e70; --te:#c98500; --k:#d55181; --def:#008300; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.num{font-variant-numeric:tabular-nums}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yolk);outline-offset:2px}
+
+/* NAV */
+.topnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg)}
+.topnav .wrap{display:flex;align-items:center;gap:14px}
+.topnav .brand{font-family:var(--display);font-size:16px;text-decoration:none;white-space:nowrap;color:var(--yolk);padding-block:10px}
+.topnav nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.topnav nav::-webkit-scrollbar{display:none}
+.topnav nav a{font-family:var(--label);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:14px;text-decoration:none;padding:12px 10px;white-space:nowrap;border-bottom:3px solid transparent;opacity:.8}
+.topnav nav a:hover{opacity:1}
+.topnav nav a[aria-current="page"]{border-bottom-color:var(--yolk);opacity:1;color:var(--yolk)}
+
+/* HERO */
+.hero{background:var(--turf);color:var(--turf-ink);position:relative;overflow:hidden;
+  background-image:repeating-linear-gradient(90deg,transparent 0 calc(10% - 2px),rgba(255,255,255,.13) calc(10% - 2px) 10%);}
+.hero .wrap{padding-block:44px 36px;position:relative;display:grid;gap:22px}
+.eyebrow{font-family:var(--label);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:14px}
+.hero .eyebrow{color:var(--yolk)}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,9vw,104px);line-height:.92;letter-spacing:-.01em}
+.hero h1 span{color:var(--yolk)}
+.hero p.lede{max-width:62ch;font-size:18px;margin:0;opacity:.94}
+.ticker{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;background:rgba(0,0,0,.25);border-radius:6px;overflow:hidden}
+.ticker div{background:rgba(0,0,0,.28);padding:12px 14px;min-width:0}
+.ticker b{display:block;font-family:var(--display);font-weight:400;font-size:26px;color:var(--yolk);line-height:1.1}
+.ticker small{font-family:var(--label);font-size:15px;letter-spacing:.03em;display:block}
+.yardno{position:absolute;right:-10px;bottom:-40px;font-family:var(--display);font-size:220px;line-height:1;color:rgba(255,255,255,.07);pointer-events:none;user-select:none}
+
+/* TOC */
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px}
+.toc a{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0;transition:transform .15s,border-color .15s}
+.toc a:hover{transform:translateY(-2px);border-color:var(--ink)}
+.toc .no{grid-row:span 2;font-family:var(--display);font-size:34px;line-height:1;color:var(--yolk);-webkit-text-stroke:1px var(--ink)}
+.toc b{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15}
+.toc span{color:var(--muted);font-size:14px;line-height:1.4}
+
+/* PAGES */
+.page{padding-block:40px 24px;min-height:60vh}
+#p-home{padding-top:0}
+.chyron{display:flex;align-items:stretch;margin-bottom:18px;flex-wrap:wrap}
+.chyron .tag{background:var(--yolk);color:#13241A;font-family:var(--label);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:14px;padding:6px 12px;display:flex;align-items:center}
+.chyron h2{background:var(--ink);color:var(--bg);font-family:var(--display);font-weight:400;font-size:clamp(24px,4vw,38px);padding:4px 16px;line-height:1.25}
+p.intro{max-width:68ch;color:var(--muted);margin:0 0 22px;font-size:17px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:20px}
+.panel h3{font-family:var(--label);font-weight:700;font-size:20px;letter-spacing:.02em;text-transform:uppercase}
+.panel .sub{color:var(--muted);font-size:14px;margin:2px 0 14px}
+.callout{font-family:var(--label);font-size:17px;border-left:4px solid var(--yolk);padding:4px 0 4px 12px;margin-top:14px;line-height:1.4}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:36px;flex-wrap:wrap}
+.pager a{font-family:var(--label);font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;border:2px solid var(--ink);border-radius:6px;padding:10px 16px;font-size:15px}
+.pager a:hover{background:var(--ink);color:var(--bg)}
+.pager a.next{margin-left:auto;background:var(--yolk);color:#13241A;border-color:var(--yolk)}
+
+/* TABLE */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:860px;font-size:15px}
+th{font-family:var(--label);text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted);text-align:left;font-weight:600;padding:8px 10px;border-bottom:2px solid var(--ink)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.r,th.r{text-align:right}
+.rank{font-family:var(--display);font-size:20px;width:36px}
+.tname{font-weight:600;line-height:1.2}
+.owner{color:var(--muted);font-size:13px}
+.chips{display:flex;gap:3px}
+.chip{width:22px;height:22px;border-radius:4px;display:grid;place-items:center;font-family:var(--label);font-weight:700;font-size:13px;color:#fff}
+.chip.W{background:var(--good)}.chip.L{background:var(--bad)}
+.effbar{display:flex;align-items:center;gap:8px;min-width:130px}
+.effbar .track{flex:1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.effbar .fill{height:100%;background:var(--turf);border-radius:0 4px 4px 0}
+tr.playoff-line td{border-bottom:2px dashed var(--yolk)}
+.pill{font-family:var(--label);font-size:12px;background:var(--yolk);color:#13241A;padding:2px 7px;border-radius:3px;letter-spacing:.06em;font-weight:700;white-space:nowrap;display:inline-block}
+.pill.hot{background:var(--sauce);color:#fff}
+
+/* SVG charts */
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{fill:var(--ink);font-family:var(--label);font-size:13px}
+svg .muted{fill:var(--muted)}
+svg .grid{stroke:var(--line);stroke-width:1}
+[data-tip]{cursor:default}
+[data-tip]:hover{filter:brightness(1.08)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--label);font-size:14px;margin-bottom:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+#tip{position:fixed;z-index:10;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--label);font-size:15px;line-height:1.3;padding:8px 10px;border-radius:6px;max-width:260px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.hscroll{overflow-x:auto}.hscroll > div{min-width:640px}
+
+/* bar lists */
+.barlist{display:grid;gap:6px}
+.barrow{display:grid;grid-template-columns:minmax(0,150px) 1fr 64px;gap:10px;align-items:center;font-size:14px}
+.barrow.wide{grid-template-columns:minmax(0,210px) 1fr 70px}
+.barrow .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.barrow .t{height:16px;background:color-mix(in oklab,var(--line) 50%,transparent);border-radius:0 4px 4px 0}
+.barrow .b{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--turf)}
+.barrow .v{text-align:right;font-family:var(--label);font-weight:600;font-variant-numeric:tabular-nums}
+.office{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+
+/* should've-won cards */
+.blown{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
+.blown > div{border:1px solid var(--line);border-radius:8px;padding:14px;background:var(--card);min-width:0}
+.blown b{font-family:var(--display);font-weight:400;font-size:18px;display:block;line-height:1.2}
+.blown .sc{font-family:var(--label);font-size:16px;margin-top:6px}
+.blown .sc em{font-style:normal;color:var(--good);font-weight:700}
+.blown p{margin:6px 0 0;font-size:14px;color:var(--muted)}
+
+/* nicknames */
+.nickstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;margin-bottom:22px}
+.nickstat{border-top:4px solid var(--yolk);padding-top:10px}
+.nickstat b{font-family:var(--display);font-weight:400;font-size:40px;line-height:1;display:block}
+.nickstat span{font-size:15px;color:var(--muted)}
+.quotes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:12px}
+.quote{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0}
+.quote q{font-family:var(--display);font-size:18px;line-height:1.2;display:block;quotes:"\201C" "\201D";overflow-wrap:anywhere}
+.quote div{font-size:13px;color:var(--muted);margin-top:8px}
+.quote.beef{border-color:var(--sauce)}
+.subhead{font-family:var(--label);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:14px;color:var(--muted);margin:28px 0 12px}
+
+/* superlatives */
+.awards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:18px}
+.award{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.award header{background:var(--ink);color:var(--bg);padding:12px 16px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.award header .t{font-family:var(--display);font-size:17px;line-height:1.15;min-width:0;overflow-wrap:anywhere}
+.award header .rec{font-family:var(--label);font-weight:700;font-size:18px;color:var(--yolk);white-space:nowrap}
+.award .body{padding:14px 16px 16px;display:grid;gap:10px;flex:1;align-content:start}
+.award .trophy{font-family:var(--label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--sauce)}
+.award h4{margin:0;font-family:var(--display);font-weight:400;font-size:22px;line-height:1.1;text-wrap:balance}
+.award p{margin:0;font-size:15px}
+.award .stats{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.award .stats span{font-family:var(--label);font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:4px;padding:2px 7px;font-variant-numeric:tabular-nums}
+
+/* predictions */
+.picklist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.picklist li{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--card);min-width:0}
+.picklist li.cut{border-top:2px dashed var(--yolk)}
+.picklist .pr{font-family:var(--display);font-size:20px;text-align:center}
+.picklist .pt{min-width:0}
+.picklist .pt b{display:block;font-weight:600;line-height:1.25}
+.picklist .pt small{color:var(--muted);font-size:13px;display:block;overflow-wrap:anywhere}
+.picklist li.champ{background:color-mix(in oklab,var(--yolk) 22%,var(--card));border-color:var(--yolk)}
+.picklist .ctl{display:flex;gap:4px}
+.picklist button,.btn{font-family:var(--label);font-weight:700;font-size:15px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:5px;padding:4px 9px;cursor:pointer}
+.picklist button:disabled{opacity:.35;cursor:default}
+.btn.primary{background:var(--yolk);color:#13241A;border-color:var(--yolk);padding:8px 16px;letter-spacing:.06em;text-transform:uppercase}
+.picklist input{width:100%;font:inherit;font-size:14px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);margin-top:4px}
+.delta{font-family:var(--label);font-weight:700;font-size:14px;white-space:nowrap}
+.delta.up{color:var(--good)}.delta.down{color:var(--bad)}
+.empty{border:2px dashed var(--line);border-radius:8px;padding:28px 20px;text-align:center}
+.empty b{font-family:var(--display);font-weight:400;font-size:22px;display:block;margin-bottom:6px}
+.empty p{margin:0 auto;color:var(--muted);max-width:44ch}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.status{font-family:var(--label);font-size:14px;color:var(--muted)}
+
+footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:24px}
+@media (max-width:520px){ .barrow{grid-template-columns:minmax(0,110px) 1fr 54px} .barrow.wide{grid-template-columns:minmax(0,140px) 1fr 64px} .yardno{font-size:140px} }
+@media (prefers-reduced-motion:no-preference){ .page:not([hidden]) .barrow .b,.page:not([hidden]) .effbar .fill{animation:grow .9s cubic-bezier(.2,.8,.2,1) both} @keyframes grow{from{transform:scaleX(.2);transform-origin:left}to{transform:scaleX(1);transform-origin:left}} }
+</style>
+
+</head>
+<body>
+<div class="topnav"><div class="wrap"><a class="brand" href="#home">PollosBowl</a><nav id="nav" aria-label="Pages"></nav></div></div>
+
+<main>
+<!-- COVER -->
+<section class="page" id="p-home">
+  <header class="hero">
+    <div class="yardno" aria-hidden="true">50</div>
+    <div class="wrap">
+      <div class="eyebrow" id="season-line"></div>
+      <h1>The Pollos<span>Bowl</span><br>Gazette</h1>
+      <p class="lede">Twelve managers. A reigning champ on fraud watch. A Seahawks fan with zero Seahawks. A Commanders fan whose bench is undefeated. And Ryan, who has renamed thirteen players "Kyle Pitts" and is somehow 2–1. Every number here comes from this season's Sleeper data. Every insult comes from the heart.</p>
+      <div class="ticker" id="ticker"></div>
+    </div>
+  </header>
+  <div class="wrap" style="padding-top:36px">
+    <div class="subhead" style="margin-top:0">Tonight's rundown</div>
+    <div class="toc" id="toc"></div>
+  </div>
+</section>
+
+<!-- STANDINGS -->
+<section class="page" id="p-standings" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 1</span><h2>The Standings</h2></div>
+  <p class="intro">Top 8 of 12 make the playoffs, which is basically a participation trophy with extra steps, and four of you are still on pace to miss it. Efficiency is points scored ÷ the best lineup you could have started. Below the dashed line: 9th place and the void.</p>
+  <div class="panel tablewrap"><table id="standings"></table></div>
+  <div class="callout" id="standcall"></div>
+</div></section>
+
+<!-- LUCK -->
+<section class="page" id="p-luck" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 2</span><h2>The Luck Lab</h2></div>
+  <p class="intro">"All-play" pretends every team played all eleven opponents every week. That gives an expected win total: your record if Sleeper's schedule generator weren't on somebody's payroll. The gap between the dots is luck, and a few of you are living on it.</p>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Actual wins vs. expected wins</h3>
+      <p class="sub">Sorted from most blessed to most cursed</p>
+      <div class="legend"><span><i style="background:var(--ink)"></i>Actual wins</span><span><i style="background:transparent;border:2px solid var(--muted)"></i>Expected wins</span></div>
+      <div id="luck"></div>
+      <div class="callout" id="luckcall"></div>
+    </div>
+    <div class="panel">
+      <h3>Weekly scoreboard heat</h3>
+      <p class="sub">Darker green = bigger week. Sorted by total points.</p>
+      <div id="heat"></div>
+      <div class="callout" id="heatcall"></div>
+    </div>
+  </div>
+  <div class="subhead">Should've won: losses where the bench had a winning lineup</div>
+  <div class="blown" id="blown"></div>
+</div></section>
+
+<!-- BENCH -->
+<section class="page" id="p-bench" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 3</span><h2>Start/Sit Malpractice</h2></div>
+  <p class="intro">Points scored by players who sat on your bench. Some of these benches are better than some of these teams. Some of these benches are better than some of these people.</p>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Points left on the pine</h3>
+      <p class="sub">Total bench points, weeks 1–<span class="wk"></span></p>
+      <div class="barlist" id="bench"></div>
+      <div class="callout">Oliver has left 179.46 points on his bench, more than any team scored in a single week all season. Nobody knows what Oliver was thinking. Nobody wants to know what Oliver says after four beers either.</div>
+    </div>
+    <div class="panel">
+      <h3>Biggest bench blunders</h3>
+      <p class="sub">Single-week bench scores that should be illegal</p>
+      <div class="barlist" id="blunders"></div>
+      <div class="callout">Beezy named his team "jackinGOFF," then benched Jared Goff for his 29.78-point week. Robel is a Packers fan. Self-sabotage is his love language.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- GAMES -->
+<section class="page" id="p-games" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 4</span><h2>Every Game, Ranked by Drama</h2></div>
+  <p class="intro">Every matchup this season, from coin flips to games where the ref should have stopped it and checked on the loser's family.</p>
+  <div class="panel">
+    <h3>Margin of victory</h3>
+    <p class="sub">Hover a bar for the final score</p>
+    <div id="margins"></div>
+    <div class="callout">Closest game of the year: Zayan beat Owen by 1.14 in week 2, while Owen had a 127.72-point lineup sitting on his roster. Happy birthday, Oweenie. Your gift is knowing.</div>
+  </div>
+</div></section>
+
+<!-- DRAFT -->
+<section class="page" id="p-draft" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 5</span><h2>Draft Report Card</h2></div>
+  <p class="intro">All 168 picks: where each player went and what he's scored on a fantasy roster this season. High dots on the right are steals. Low dots on the left are why certain group chat members have gone quiet.</p>
+  <div class="panel">
+    <h3>Pick number vs. fantasy points this season</h3>
+    <div class="legend" id="poslegend"></div>
+    <div id="draft"></div>
+  </div>
+  <div class="grid2" style="margin-top:20px">
+    <div class="panel"><h3>The steal</h3><p class="sub">Pick 133, round 12</p><div class="callout" style="margin-top:0">Mat took Brock Purdy 133rd overall. Purdy has outscored 10 of the 12 first-round picks and leads a 3–0 team in scoring. We're not saying it's fraud. We're saying the investigation is ongoing and Mat should not leave the state.</div></div>
+    <div class="panel"><h3>The crime scene</h3><p class="sub">Mikey's rounds 1–3</p><div class="callout" style="margin-top:0">Achane, A.J. Brown, Josh Jacobs: 30.2 combined points. Jacobs has 0.0. That's not a draft, that's a Washington front office from the Snyder era. Mikey, you have suffered enough. Unfortunately the regular season is 14 weeks long.</div></div>
+  </div>
+</div></section>
+
+<!-- OFFICE -->
+<section class="page" id="p-office" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 6</span><h2>Front Office Activity</h2></div>
+  <p class="intro">Who's grinding the wire at 3 a.m., who's sending trade offers like a robocaller with an extended warranty, and who set a lineup in August and logged off forever.</p>
+  <div class="office">
+    <div class="panel"><h3>Players added</h3><p class="sub">Waivers + free agents</p><div class="barlist" id="adds"></div></div>
+    <div class="panel"><h3>Trades</h3><p class="sub">Completed deals</p><div class="barlist" id="trades"></div></div>
+    <div class="panel"><h3>FAAB spent</h3><p class="sub">Out of $100</p><div class="barlist" id="faab"></div></div>
+  </div>
+  <div class="panel" style="margin-top:20px">
+    <h3>Trade ledger: who's winning their trades</h3>
+    <p class="sub">Points that acquired players scored for their new team, minus points that traded-away players scored for theirs</p>
+    <div id="ledger"></div>
+    <div class="callout">Zayan has made seven trades and is down 59.8 points on them. He gave Owen Harold Fannin (34.5 points since) for Kyle Monangai (10.9). He gave Dan Quinshon Judkins (19.7) for Dallas Goedert (1.4). Zayan isn't trading. He's running a charity, and every other manager is a registered beneficiary.</div>
+  </div>
+</div></section>
+
+<!-- NICKNAMES -->
+<section class="page" id="p-nicknames" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 7</span><h2>The Nickname Department</h2></div>
+  <p class="intro">Sleeper lets you nickname your players. This league took that as a dare: <span id="nicktotal"></span> nicknames across 12 rosters.</p>
+  <div class="nickstats">
+    <div class="nickstat"><b class="num">74</b><span>nicknames from Zayan, who spends more time naming players than evaluating them</span></div>
+    <div class="nickstat"><b class="num">27</b><span>"-iddy" nicknames from Beezy (J Gofiddy, K Piddy, C Diddy...). Grief takes many forms.</span></div>
+    <div class="nickstat"><b class="num">20</b><span>players named some kind of "Deion" by the GilgBoys</span></div>
+    <div class="nickstat"><b class="num">13</b><span>players Ryan has renamed "Kyle Pitts," including Kyle Pitts</span></div>
+  </div>
+  <div class="panel"><h3>Nicknames per roster</h3><p class="sub">Mason has given out zero. You don't name a pet you know won't make it to December.</p><div class="barlist" id="nicks"></div></div>
+  <div class="subhead">The Beef Board: nicknames aimed at other league members</div>
+  <div class="quotes" id="beef"></div>
+  <div class="subhead">Nickname Hall of Fame</div>
+  <div class="quotes" id="quotes"></div>
+</div></section>
+
+<!-- AWARDS -->
+<section class="page" id="p-awards" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 8</span><h2>The Superlatives</h2></div>
+  <p class="intro">One award per manager, handed out with love, receipts, and zero mercy. Sorted by standings, so the roasting gets darker as you scroll.</p>
+  <div class="awards" id="awards"></div>
+</div></section>
+
+<!-- PREDICTIONS -->
+<section class="page" id="p-picks" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Segment 9</span><h2>Adam's Power Rankings</h2></div>
+  <p class="intro">Straight from the parade float: Adam's official power rankings are on the left. On the right, a cold, unfeeling spreadsheet projects final records from each team's all-play win rate so far. Screenshot this page. Hold him to it.</p>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Adam's rankings</h3>
+      <p class="sub" id="pickmeta">Top 8 make the playoffs · No. 1 is the champ</p>
+      <div class="toolbar" id="picktools" hidden></div>
+      <div id="picks"></div>
+      <div class="callout">Adam ranked himself 2nd, behind only the reigning champ, the most humble thing he has done since February. He has Oweenie 3rd, three spots above the spreadsheet, presumably as a birthday present. He has Dan 6th, three spots below the spreadsheet, which we can only assume is about Mason's chair. He has Ryan 11th. Ryan built this website, Adam. The website remembers.</div>
+    </div>
+    <div class="panel">
+      <h3>The spreadsheet's projection</h3>
+      <p class="sub">Current wins + remaining games × all-play win rate</p>
+      <div class="barlist" id="model"></div>
+      <div class="callout" id="modelcall"></div>
+    </div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">Built from this season's PollosBowl Sleeper export (league 1389331479493873664) only. Stats run through week <span class="wk"></span>. Player points count only weeks a player was on a fantasy roster. A few waiver pickups don't appear by name because the export doesn't include them. "Should've won" lineups use only players with known positions, so they're a conservative estimate.</div></footer>
+<div id="tip" hidden></div>
+
+<script>
+const DATA = {"league":{"name":"PollosBowl 2027","season":"2026","week":3,"regWeeks":14,"playoffTeams":8},"teams":{"1":{"rid":1,"name":"Return of Pukachu","owner":"jloadingxdc","w":1,"l":2,"pf":373.92,"pa":369.08,"maxpf":419.32,"faab":100,"nicks":28,"questionable":5,"ir":["Tank Dell"],"weekly":[152.4,109.88,111.64],"res":["W","L","L"],"bench":119.16,"allw":16,"alll":17,"adds":21,"trades":2,"failed":1,"tradenet":38.3,"eff":89.2,"xw":1.45,"proj":6.3},"2":{"rid":2,"name":"Gibbs is Mela-Mid","owner":"mjun","w":3,"l":0,"pf":479.56,"pa":316.6,"maxpf":491.56,"faab":0,"nicks":27,"questionable":2,"ir":[],"weekly":[155.3,150.88,173.38],"res":["W","W","W"],"bench":111.5,"allw":31,"alll":2,"adds":0,"trades":1,"failed":1,"tradenet":0.0,"eff":97.6,"xw":2.82,"proj":13.3},"3":{"rid":3,"name":"Easy LOVErs(jackinGOFF)","owner":"Rob33zy","w":1,"l":2,"pf":360.06,"pa":446.08,"maxpf":401.14,"faab":91,"nicks":58,"questionable":2,"ir":["Jordyn Tyson"],"weekly":[125.98,113.5,120.58],"res":["L","W","L"],"bench":143.78,"allw":21,"alll":12,"adds":3,"trades":3,"failed":2,"tradenet":-15.1,"eff":89.8,"xw":1.91,"proj":8.0},"4":{"rid":4,"name":"they Starvin my Marvin","owner":"agamff","w":3,"l":0,"pf":454.5,"pa":329.66,"maxpf":475.4,"faab":16,"nicks":27,"questionable":1,"ir":["Alec Pierce"],"weekly":[162.82,146.56,145.12],"res":["W","W","W"],"bench":85.3,"allw":29,"alll":4,"adds":17,"trades":1,"failed":3,"tradenet":0.0,"eff":95.6,"xw":2.64,"proj":12.7},"5":{"rid":5,"name":"Ceedee DaaAAAAaaayuUum","owner":"OwenH84","w":1,"l":2,"pf":356.38,"pa":378.96,"maxpf":434.48,"faab":8,"nicks":41,"questionable":1,"ir":["Caleb Williams"],"weekly":[126.26,109.92,120.2],"res":["L","L","W"],"bench":165.9,"allw":18,"alll":15,"adds":9,"trades":8,"failed":7,"tradenet":38.7,"eff":82.0,"xw":1.64,"proj":7.0},"6":{"rid":6,"name":"Ass or Tets?","owner":"Zmat83","w":2,"l":1,"pf":304.6,"pa":323.86,"maxpf":333.2,"faab":0,"nicks":74,"questionable":1,"ir":["Travis Etienne"],"weekly":[116.0,111.06,77.54],"res":["W","W","L"],"bench":116.42,"allw":11,"alll":22,"adds":9,"trades":7,"failed":1,"tradenet":-59.8,"eff":91.4,"xw":1.0,"proj":5.7},"7":{"rid":7,"name":"Nabers QB has died","owner":"mparadise10","w":1,"l":2,"pf":297.36,"pa":394.56,"maxpf":327.8,"faab":1,"nicks":0,"questionable":3,"ir":["Jonathon Brooks"],"weekly":[84.92,104.66,107.78],"res":["L","L","W"],"bench":99.58,"allw":5,"alll":28,"adds":6,"trades":1,"failed":1,"tradenet":0.0,"eff":90.7,"xw":0.45,"proj":2.7},"8":{"rid":8,"name":"Boys in a POOL","owner":"ODog7133","w":0,"l":3,"pf":303.86,"pa":336.14,"maxpf":389.7,"faab":0,"nicks":38,"questionable":6,"ir":["Isiah Pacheco"],"weekly":[89.94,100.98,112.94],"res":["L","L","L"],"bench":179.46,"allw":7,"alll":26,"adds":4,"trades":0,"failed":0,"tradenet":0.0,"eff":78.0,"xw":0.64,"proj":2.3},"9":{"rid":9,"name":"Hitting women? Joshin me","owner":"mikegoat8","w":1,"l":2,"pf":313.52,"pa":323.4,"maxpf":346.6,"faab":33,"nicks":14,"questionable":4,"ir":["A.J. Brown"],"weekly":[106.16,104.98,102.38],"res":["L","W","L"],"bench":99.98,"allw":6,"alll":27,"adds":1,"trades":2,"failed":1,"tradenet":0.0,"eff":90.5,"xw":0.55,"proj":3.0},"10":{"rid":10,"name":"Ambidextrous Jelqers","owner":"Ryan5259","w":2,"l":1,"pf":309.42,"pa":338.88,"maxpf":355.42,"faab":0,"nicks":22,"questionable":7,"ir":["Jayden Daniels"],"weekly":[110.96,92.04,106.42],"res":["W","L","W"],"bench":101.72,"allw":6,"alll":27,"adds":7,"trades":2,"failed":3,"tradenet":-20.4,"eff":87.1,"xw":0.55,"proj":4.0},"11":{"rid":11,"name":"Njigba Please…","owner":"DanimalsTime","w":2,"l":1,"pf":458.6,"pa":385.26,"maxpf":502.1,"faab":0,"nicks":1,"questionable":1,"ir":[],"weekly":[154.96,161.72,141.92],"res":["W","W","L"],"bench":113.2,"allw":28,"alll":5,"adds":0,"trades":1,"failed":0,"tradenet":18.3,"eff":91.3,"xw":2.55,"proj":11.3},"12":{"rid":12,"name":"Jackie and the GilgBoys","owner":"cgilger","w":1,"l":2,"pf":375.9,"pa":445.2,"maxpf":413.5,"faab":0,"nicks":49,"questionable":2,"ir":[],"weekly":[110.46,111.1,154.34],"res":["L","L","W"],"bench":131.68,"allw":20,"alll":13,"adds":0,"trades":0,"failed":0,"tradenet":0.0,"eff":90.9,"xw":1.82,"proj":7.7}},"games":[{"wk":1,"w":1,"l":12,"ws":152.4,"ls":110.46,"margin":41.94},{"wk":1,"w":2,"l":7,"ws":155.3,"ls":84.92,"margin":70.38},{"wk":1,"w":4,"l":3,"ws":162.82,"ls":125.98,"margin":36.84},{"wk":1,"w":11,"l":5,"ws":154.96,"ls":126.26,"margin":28.7},{"wk":1,"w":6,"l":9,"ws":116.0,"ls":106.16,"margin":9.84},{"wk":1,"w":10,"l":8,"ws":110.96,"ls":89.94,"margin":21.02},{"wk":2,"w":3,"l":1,"ws":113.5,"ls":109.88,"margin":3.62},{"wk":2,"w":2,"l":12,"ws":150.88,"ls":111.1,"margin":39.78},{"wk":2,"w":4,"l":10,"ws":146.56,"ls":92.04,"margin":54.52},{"wk":2,"w":6,"l":5,"ws":111.06,"ls":109.92,"margin":1.14},{"wk":2,"w":11,"l":7,"ws":161.72,"ls":104.66,"margin":57.06},{"wk":2,"w":9,"l":8,"ws":104.98,"ls":100.98,"margin":4.0},{"wk":3,"w":4,"l":1,"ws":145.12,"ls":111.64,"margin":33.48},{"wk":3,"w":2,"l":3,"ws":173.38,"ls":120.58,"margin":52.8},{"wk":3,"w":5,"l":8,"ws":120.2,"ls":112.94,"margin":7.26},{"wk":3,"w":7,"l":6,"ws":107.78,"ls":77.54,"margin":30.24},{"wk":3,"w":10,"l":9,"ws":106.42,"ls":102.38,"margin":4.04},{"wk":3,"w":12,"l":11,"ws":154.34,"ls":141.92,"margin":12.42}],"draft":[{"name":"Jahmyr Gibbs","pos":"RB","pick":1,"rnd":1,"by":4,"pts":98.3},{"name":"Bijan Robinson","pos":"RB","pick":2,"rnd":1,"by":12,"pts":77.7},{"name":"Jaxon Smith-Njigba","pos":"WR","pick":3,"rnd":1,"by":11,"pts":104.06},{"name":"Ja'Marr Chase","pos":"WR","pick":4,"rnd":1,"by":10,"pts":54.5},{"name":"Jonathan Taylor","pos":"RB","pick":5,"rnd":1,"by":6,"pts":63.5},{"name":"Christian McCaffrey","pos":"RB","pick":6,"rnd":1,"by":7,"pts":58.0},{"name":"Amon-Ra St. Brown","pos":"WR","pick":7,"rnd":1,"by":3,"pts":75.8},{"name":"Saquon Barkley","pos":"RB","pick":8,"rnd":1,"by":8,"pts":21.0},{"name":"De'Von Achane","pos":"RB","pick":9,"rnd":1,"by":9,"pts":24.6},{"name":"Puka Nacua","pos":"WR","pick":10,"rnd":1,"by":1,"pts":12.4},{"name":"James Cook","pos":"RB","pick":11,"rnd":1,"by":5,"pts":50.2},{"name":"Chase Brown","pos":"RB","pick":12,"rnd":1,"by":2,"pts":38.9},{"name":"Derrick Henry","pos":"RB","pick":13,"rnd":2,"by":2,"pts":74.9},{"name":"CeeDee Lamb","pos":"WR","pick":14,"rnd":2,"by":5,"pts":70.9},{"name":"Justin Jefferson","pos":"WR","pick":15,"rnd":2,"by":1,"pts":44.9},{"name":"A.J. Brown","pos":"WR","pick":16,"rnd":2,"by":9,"pts":5.6},{"name":"Kenneth Walker","pos":"RB","pick":17,"rnd":2,"by":8,"pts":79.2},{"name":"George Pickens","pos":"WR","pick":18,"rnd":2,"by":3,"pts":31.0},{"name":"Omarion Hampton","pos":"RB","pick":19,"rnd":2,"by":7,"pts":31.4},{"name":"Nico Collins","pos":"WR","pick":20,"rnd":2,"by":6,"pts":21.2},{"name":"Ashton Jeanty","pos":"RB","pick":21,"rnd":2,"by":10,"pts":55.3},{"name":"Josh Allen","pos":"QB","pick":22,"rnd":2,"by":11,"pts":95.94},{"name":"Drake London","pos":"WR","pick":23,"rnd":2,"by":12,"pts":42.8},{"name":"Brock Bowers","pos":"TE","pick":24,"rnd":2,"by":4,"pts":27.6},{"name":"Chris Olave","pos":"WR","pick":25,"rnd":3,"by":4,"pts":70.5},{"name":"Lamar Jackson","pos":"QB","pick":26,"rnd":3,"by":12,"pts":61.2},{"name":"Trey McBride","pos":"TE","pick":27,"rnd":3,"by":11,"pts":59.1},{"name":"Jeremiyah Love","pos":"RB","pick":28,"rnd":3,"by":10,"pts":42.4},{"name":"Rashee Rice","pos":"WR","pick":29,"rnd":3,"by":6,"pts":38.0},{"name":"Malik Nabers","pos":"WR","pick":30,"rnd":3,"by":7,"pts":21.6},{"name":"Kyren Williams","pos":"RB","pick":31,"rnd":3,"by":3,"pts":53.0},{"name":"DeVonta Smith","pos":"WR","pick":32,"rnd":3,"by":8,"pts":48.5},{"name":"Josh Jacobs","pos":"RB","pick":33,"rnd":3,"by":9,"pts":0.0},{"name":"Javonte Williams","pos":"RB","pick":34,"rnd":3,"by":1,"pts":50.5},{"name":"Tetairoa McMillan","pos":"WR","pick":35,"rnd":3,"by":5,"pts":29.3},{"name":"Zay Flowers","pos":"WR","pick":36,"rnd":3,"by":2,"pts":41.4},{"name":"Tee Higgins","pos":"WR","pick":37,"rnd":4,"by":2,"pts":44.4},{"name":"Cam Skattebo","pos":"RB","pick":38,"rnd":4,"by":5,"pts":36.6},{"name":"Travis Etienne","pos":"RB","pick":39,"rnd":4,"by":1,"pts":30.9},{"name":"Garrett Wilson","pos":"WR","pick":40,"rnd":4,"by":9,"pts":57.3},{"name":"Emeka Egbuka","pos":"WR","pick":41,"rnd":4,"by":8,"pts":32.8},{"name":"Bucky Irving","pos":"RB","pick":42,"rnd":4,"by":3,"pts":41.1},{"name":"Ladd McConkey","pos":"WR","pick":43,"rnd":4,"by":7,"pts":36.3},{"name":"Quinshon Judkins","pos":"RB","pick":44,"rnd":4,"by":6,"pts":26.7},{"name":"Colston Loveland","pos":"TE","pick":45,"rnd":4,"by":10,"pts":8.4},{"name":"David Montgomery","pos":"RB","pick":46,"rnd":4,"by":11,"pts":40.1},{"name":"Tyler Warren","pos":"TE","pick":47,"rnd":4,"by":12,"pts":39.4},{"name":"D'Andre Swift","pos":"RB","pick":48,"rnd":4,"by":4,"pts":56.1},{"name":"Jalen Hurts","pos":"QB","pick":49,"rnd":5,"by":4,"pts":56.5},{"name":"Jaylen Waddle","pos":"WR","pick":50,"rnd":5,"by":12,"pts":29.4},{"name":"Davante Adams","pos":"WR","pick":51,"rnd":5,"by":11,"pts":65.8},{"name":"Terry McLaurin","pos":"WR","pick":52,"rnd":5,"by":10,"pts":30.1},{"name":"Breece Hall","pos":"RB","pick":53,"rnd":5,"by":6,"pts":42.5},{"name":"Drake Maye","pos":"QB","pick":54,"rnd":5,"by":7,"pts":27.6},{"name":"TreVeyon Henderson","pos":"RB","pick":55,"rnd":5,"by":3,"pts":17.5},{"name":"Tucker Kraft","pos":"TE","pick":56,"rnd":5,"by":8,"pts":19.6},{"name":"Carnell Tate","pos":"WR","pick":57,"rnd":5,"by":9,"pts":25.3},{"name":"Sam LaPorta","pos":"TE","pick":58,"rnd":5,"by":1,"pts":34.4},{"name":"DJ Moore","pos":"WR","pick":59,"rnd":5,"by":5,"pts":33.6},{"name":"Jake Ferguson","pos":"TE","pick":60,"rnd":5,"by":2,"pts":32.2},{"name":"Jaylen Warren","pos":"RB","pick":61,"rnd":6,"by":2,"pts":40.6},{"name":"Luther Burden","pos":"WR","pick":62,"rnd":6,"by":5,"pts":35.5},{"name":"Jadarian Price","pos":"RB","pick":63,"rnd":6,"by":1,"pts":14.0},{"name":"Joe Burrow","pos":"QB","pick":64,"rnd":6,"by":9,"pts":53.92},{"name":"Brandon Aubrey","pos":"K","pick":65,"rnd":6,"by":8,"pts":28.0},{"name":"Kyle Pitts","pos":"TE","pick":66,"rnd":6,"by":3,"pts":4.0},{"name":"Rome Odunze","pos":"WR","pick":67,"rnd":6,"by":7,"pts":21.9},{"name":"Dak Prescott","pos":"QB","pick":68,"rnd":6,"by":6,"pts":64.1},{"name":"Jayden Daniels","pos":"QB","pick":69,"rnd":6,"by":10,"pts":32.4},{"name":"Jameson Williams","pos":"WR","pick":70,"rnd":6,"by":11,"pts":22.7},{"name":"Bhayshul Tuten","pos":"RB","pick":71,"rnd":6,"by":12,"pts":41.0},{"name":"Parker Washington","pos":"WR","pick":72,"rnd":6,"by":4,"pts":49.1},{"name":"Marvin Harrison","pos":"WR","pick":73,"rnd":7,"by":4,"pts":11.3},{"name":"Mike Evans","pos":"WR","pick":74,"rnd":7,"by":12,"pts":37.7},{"name":"RJ Harvey","pos":"RB","pick":75,"rnd":7,"by":11,"pts":18.8},{"name":"Brian Thomas","pos":"WR","pick":76,"rnd":7,"by":10,"pts":15.8},{"name":"Harold Fannin","pos":"TE","pick":77,"rnd":7,"by":6,"pts":38.6},{"name":"Tony Pollard","pos":"RB","pick":78,"rnd":7,"by":7,"pts":25.5},{"name":"Christian Watson","pos":"WR","pick":79,"rnd":7,"by":3,"pts":69.4},{"name":"Chuba Hubbard","pos":"RB","pick":80,"rnd":7,"by":8,"pts":53.1},{"name":"Dalton Kincaid","pos":"TE","pick":81,"rnd":7,"by":9,"pts":44.3},{"name":"Jaxson Dart","pos":"QB","pick":82,"rnd":7,"by":1,"pts":26.6},{"name":"Caleb Williams","pos":"QB","pick":83,"rnd":7,"by":5,"pts":45.98},{"name":"Courtland Sutton","pos":"WR","pick":84,"rnd":7,"by":2,"pts":16.2},{"name":"Jason Myers","pos":"K","pick":85,"rnd":8,"by":2,"pts":23.0},{"name":"Jordyn Tyson","pos":"WR","pick":86,"rnd":8,"by":5,"pts":0.0},{"name":"Los Angeles Rams","pos":"DEF","pick":87,"rnd":8,"by":1,"pts":22.5},{"name":"Seattle Seahawks","pos":"DEF","pick":88,"rnd":8,"by":9,"pts":28.0},{"name":"Chris Godwin","pos":"WR","pick":89,"rnd":8,"by":8,"pts":22.6},{"name":"Houston Texans","pos":"DEF","pick":90,"rnd":8,"by":3,"pts":21.5},{"name":"George Kittle","pos":"TE","pick":91,"rnd":8,"by":7,"pts":47.4},{"name":"Michael Wilson","pos":"WR","pick":92,"rnd":8,"by":6,"pts":40.3},{"name":"DK Metcalf","pos":"WR","pick":93,"rnd":8,"by":10,"pts":26.8},{"name":"Rhamondre Stevenson","pos":"RB","pick":94,"rnd":8,"by":11,"pts":24.9},{"name":"Denver Broncos","pos":"DEF","pick":95,"rnd":8,"by":12,"pts":27.5},{"name":"Alec Pierce","pos":"WR","pick":96,"rnd":8,"by":4,"pts":12.2},{"name":"J.K. Dobbins","pos":"RB","pick":97,"rnd":9,"by":4,"pts":13.5},{"name":"Justin Herbert","pos":"QB","pick":98,"rnd":9,"by":12,"pts":37.88},{"name":"Baltimore Ravens","pos":"DEF","pick":99,"rnd":9,"by":11,"pts":20.5},{"name":"Rico Dowdle","pos":"RB","pick":100,"rnd":9,"by":10,"pts":10.5},{"name":"Philadelphia Eagles","pos":"DEF","pick":101,"rnd":9,"by":6,"pts":14.0},{"name":"Jordan Addison","pos":"WR","pick":102,"rnd":9,"by":7,"pts":24.1},{"name":"Cameron Dicker","pos":"K","pick":103,"rnd":9,"by":3,"pts":12.0},{"name":"Isaiah Likely","pos":"TE","pick":104,"rnd":9,"by":8,"pts":39.4},{"name":"Ka'imi Fairbairn","pos":"K","pick":105,"rnd":9,"by":9,"pts":20.0},{"name":"Travis Hunter","pos":"WR","pick":106,"rnd":9,"by":1,"pts":0},{"name":"Makai Lemon","pos":"WR","pick":107,"rnd":9,"by":5,"pts":2.5},{"name":"Minnesota Vikings","pos":"DEF","pick":108,"rnd":9,"by":2,"pts":54.0},{"name":"Stefon Diggs","pos":"WR","pick":109,"rnd":10,"by":2,"pts":44.5},{"name":"Kyle Monangai","pos":"RB","pick":110,"rnd":10,"by":5,"pts":31.3},{"name":"Jordan Mason","pos":"RB","pick":111,"rnd":10,"by":1,"pts":11.9},{"name":"Jacory Croskey-Merritt","pos":"RB","pick":112,"rnd":10,"by":9,"pts":23.7},{"name":"Bo Nix","pos":"QB","pick":113,"rnd":10,"by":8,"pts":46.7},{"name":"Blake Corum","pos":"RB","pick":114,"rnd":10,"by":3,"pts":19.1},{"name":"Jonathon Brooks","pos":"RB","pick":115,"rnd":10,"by":7,"pts":9.3},{"name":"Michael Pittman","pos":"WR","pick":116,"rnd":10,"by":6,"pts":12.4},{"name":"Cam Little","pos":"K","pick":117,"rnd":10,"by":10,"pts":23.0},{"name":"Josh Downs","pos":"WR","pick":118,"rnd":10,"by":11,"pts":32.6},{"name":"Travis Kelce","pos":"TE","pick":119,"rnd":10,"by":12,"pts":49.1},{"name":"New England Patriots","pos":"DEF","pick":120,"rnd":10,"by":4,"pts":0},{"name":"Matthew Stafford","pos":"QB","pick":121,"rnd":11,"by":4,"pts":5.1},{"name":"Kenny Gainwell","pos":"RB","pick":122,"rnd":11,"by":12,"pts":10.3},{"name":"Dallas Goedert","pos":"TE","pick":123,"rnd":11,"by":11,"pts":25.1},{"name":"Detroit Lions","pos":"DEF","pick":124,"rnd":11,"by":10,"pts":0},{"name":"Mark Andrews","pos":"TE","pick":125,"rnd":11,"by":6,"pts":25.2},{"name":"Jayden Reed","pos":"WR","pick":126,"rnd":11,"by":7,"pts":6.4},{"name":"Jordan Love","pos":"QB","pick":127,"rnd":11,"by":3,"pts":53.76},{"name":"Deebo Samuel","pos":"WR","pick":128,"rnd":11,"by":8,"pts":39.9},{"name":"Oronde Gadsden","pos":"TE","pick":129,"rnd":11,"by":9,"pts":15.0},{"name":"Mike Washington","pos":"RB","pick":130,"rnd":11,"by":1,"pts":0},{"name":"Rachaad White","pos":"RB","pick":131,"rnd":11,"by":5,"pts":30.1},{"name":"Aaron Jones","pos":"RB","pick":132,"rnd":11,"by":2,"pts":34.7},{"name":"Brock Purdy","pos":"QB","pick":133,"rnd":12,"by":2,"pts":81.86},{"name":"Hunter Henry","pos":"TE","pick":134,"rnd":12,"by":5,"pts":14.1},{"name":"Patrick Mahomes","pos":"QB","pick":135,"rnd":12,"by":1,"pts":68.58},{"name":"Matthew Golden","pos":"WR","pick":136,"rnd":12,"by":9,"pts":46.3},{"name":"Xavier Worthy","pos":"WR","pick":137,"rnd":12,"by":8,"pts":22.3},{"name":"Brenton Strange","pos":"TE","pick":138,"rnd":12,"by":3,"pts":20.2},{"name":"Trevor Lawrence","pos":"QB","pick":139,"rnd":12,"by":7,"pts":54.04},{"name":"Jake Bates","pos":"K","pick":140,"rnd":12,"by":6,"pts":7.0},{"name":"Wan'Dale Robinson","pos":"WR","pick":141,"rnd":12,"by":10,"pts":29.4},{"name":"KC Concepcion","pos":"WR","pick":142,"rnd":12,"by":11,"pts":18.9},{"name":"Quentin Johnston","pos":"WR","pick":143,"rnd":12,"by":12,"pts":13.1},{"name":"Harrison Mevis","pos":"K","pick":144,"rnd":12,"by":4,"pts":1.0},{"name":"Ja'Kobi Lane","pos":"WR","pick":145,"rnd":13,"by":4,"pts":0},{"name":"Andy Borregales","pos":"K","pick":146,"rnd":13,"by":12,"pts":20.0},{"name":"Chris Boswell","pos":"K","pick":147,"rnd":13,"by":11,"pts":25.0},{"name":"Baker Mayfield","pos":"QB","pick":148,"rnd":13,"by":10,"pts":13.18},{"name":"Fernando Mendoza","pos":"QB","pick":149,"rnd":13,"by":6,"pts":0},{"name":"Dallas Cowboys","pos":"DEF","pick":150,"rnd":13,"by":7,"pts":0},{"name":"Jared Goff","pos":"QB","pick":151,"rnd":13,"by":3,"pts":65.58},{"name":"Green Bay Packers","pos":"DEF","pick":152,"rnd":13,"by":8,"pts":7.0},{"name":"Jakobi Meyers","pos":"WR","pick":153,"rnd":13,"by":9,"pts":35.4},{"name":"Evan McPherson","pos":"K","pick":154,"rnd":13,"by":1,"pts":42.0},{"name":"Jacksonville Jaguars","pos":"DEF","pick":155,"rnd":13,"by":5,"pts":17.0},{"name":"MarShawn Lloyd","pos":"RB","pick":156,"rnd":13,"by":2,"pts":16.1},{"name":"Juwan Johnson","pos":"TE","pick":157,"rnd":14,"by":2,"pts":48.3},{"name":"Will Reichard","pos":"K","pick":158,"rnd":14,"by":5,"pts":33.0},{"name":"Tank Dell","pos":"WR","pick":159,"rnd":14,"by":1,"pts":0.0},{"name":"Sam Darnold","pos":"QB","pick":160,"rnd":14,"by":9,"pts":30.18},{"name":"Isiah Pacheco","pos":"RB","pick":161,"rnd":14,"by":8,"pts":0.0},{"name":"Tyler Allgeier","pos":"RB","pick":162,"rnd":14,"by":3,"pts":9.0},{"name":"Jake Elliott","pos":"K","pick":163,"rnd":14,"by":7,"pts":6.0},{"name":"Woody Marks","pos":"RB","pick":164,"rnd":14,"by":6,"pts":22.6},{"name":"Kenyon Sadiq","pos":"TE","pick":165,"rnd":14,"by":10,"pts":38.6},{"name":"Tom Brady","pos":"QB","pick":166,"rnd":14,"by":11,"pts":0.0},{"name":"Romeo Doubs","pos":"WR","pick":167,"rnd":14,"by":12,"pts":20.5},{"name":"AJ Barner","pos":"TE","pick":168,"rnd":14,"by":4,"pts":3.3}],"blown":[{"wk":1,"rid":9,"opp":6,"score":106.16,"opps":116.0,"best":120.46},{"wk":1,"rid":8,"opp":10,"score":89.94,"opps":110.96,"best":133.84},{"wk":2,"rid":5,"opp":6,"score":109.92,"opps":111.06,"best":127.72},{"wk":2,"rid":8,"opp":9,"score":100.98,"opps":104.98,"best":137.12},{"wk":3,"rid":9,"opp":10,"score":102.38,"opps":106.42,"best":117.06}],"trades":[{"player":"Michael Wilson","to":1,"frm":6,"pts":29.7,"leg":1},{"player":"a waiver mystery man","to":6,"frm":1,"pts":18.4,"leg":1},{"player":"Travis Etienne","to":6,"frm":1,"pts":16.1,"leg":1},{"player":"Breece Hall","to":1,"frm":6,"pts":22.7,"leg":1},{"player":"Harold Fannin","to":5,"frm":6,"pts":34.5,"leg":2},{"player":"Kyle Monangai","to":6,"frm":5,"pts":10.9,"leg":2},{"player":"Blake Corum","to":5,"frm":3,"pts":13.7,"leg":2},{"player":"Cam Skattebo","to":3,"frm":5,"pts":22.5,"leg":2},{"player":"Tetairoa McMillan","to":3,"frm":5,"pts":18.8,"leg":2},{"player":"TreVeyon Henderson","to":5,"frm":3,"pts":17.5,"leg":2},{"player":"Jordyn Tyson","to":3,"frm":5,"pts":0.0,"leg":2},{"player":"George Pickens","to":5,"frm":3,"pts":25.2,"leg":2},{"player":"Quinshon Judkins","to":11,"frm":6,"pts":19.7,"leg":2},{"player":"Dallas Goedert","to":6,"frm":11,"pts":1.4,"leg":2},{"player":"a waiver mystery man","to":4,"frm":6,"pts":0,"leg":3},{"player":"a waiver mystery man","to":6,"frm":4,"pts":0,"leg":3},{"player":"J.K. Dobbins","to":6,"frm":4,"pts":0,"leg":3},{"player":"a waiver mystery man","to":4,"frm":6,"pts":0,"leg":3},{"player":"Los Angeles Rams","to":6,"frm":4,"pts":0,"leg":3},{"player":"Carnell Tate","to":10,"frm":9,"pts":0,"leg":3},{"player":"Terry McLaurin","to":9,"frm":10,"pts":0,"leg":3},{"player":"Joe Burrow","to":10,"frm":9,"pts":0,"leg":3},{"player":"Dalton Kincaid","to":5,"frm":9,"pts":0,"leg":3},{"player":"Matthew Golden","to":5,"frm":9,"pts":0,"leg":3},{"player":"Harold Fannin","to":9,"frm":5,"pts":0,"leg":3},{"player":"TreVeyon Henderson","to":9,"frm":5,"pts":0,"leg":3},{"player":"George Pickens","to":9,"frm":5,"pts":0,"leg":3},{"player":"Garrett Wilson","to":5,"frm":9,"pts":0,"leg":3},{"player":"Bucky Irving","to":6,"frm":3,"pts":0,"leg":3},{"player":"Cam Skattebo","to":6,"frm":3,"pts":0,"leg":3},{"player":"Tetairoa McMillan","to":6,"frm":3,"pts":0,"leg":3},{"player":"Mark Andrews","to":3,"frm":6,"pts":0,"leg":3},{"player":"Jonathan Taylor","to":3,"frm":6,"pts":0,"leg":3},{"player":"a waiver mystery man","to":3,"frm":6,"pts":0,"leg":3},{"player":"Drake Maye","to":5,"frm":7,"pts":0,"leg":3},{"player":"a waiver mystery man","to":7,"frm":5,"pts":0,"leg":3},{"player":"Sam LaPorta","to":10,"frm":1,"pts":7.4,"leg":3},{"player":"Colston Loveland","to":1,"frm":10,"pts":7.1,"leg":3},{"player":"Jadarian Price","to":10,"frm":1,"pts":1.2,"leg":3},{"player":"Jeremiyah Love","to":1,"frm":10,"pts":21.9,"leg":3},{"player":"Luther Burden","to":2,"frm":5,"pts":0,"leg":4},{"player":"Aaron Jones","to":5,"frm":2,"pts":0,"leg":4},{"player":"a waiver mystery man","to":3,"frm":5,"pts":0,"leg":4},{"player":"Woody Marks","to":5,"frm":3,"pts":0,"leg":4}],"perfs":[{"player":"Jaxon Smith-Njigba","pts":42.5,"wk":2,"rid":11},{"player":"Jahmyr Gibbs","pts":41.4,"wk":3,"rid":4},{"player":"Josh Allen","pts":40.82,"wk":2,"rid":11},{"player":"Davante Adams","pts":39.5,"wk":2,"rid":11},{"player":"Caleb Williams","pts":37.26,"wk":1,"rid":5}],"blunders":[{"player":"Jared Goff","pts":29.78,"wk":2,"rid":3},{"player":"Sam Darnold","pts":29.66,"wk":3,"rid":9},{"player":"Isaiah Likely","pts":27.8,"wk":1,"rid":8},{"player":"DeVonta Smith","pts":27.7,"wk":2,"rid":8},{"player":"Trevor Lawrence","pts":26.1,"wk":1,"rid":7},{"player":"Travis Kelce","pts":25.1,"wk":2,"rid":12},{"player":"Harold Fannin","pts":24.1,"wk":3,"rid":5},{"player":"Chuba Hubbard","pts":23.7,"wk":1,"rid":8}],"picks":{"by":"Adam","order":[2,4,5,3,1,11,6,12,8,7,10,9],"takes":{},"updatedAt":"2026-10-07T12:00:00Z"}};
+const T = DATA.teams;
+const teams = Object.values(T);
+const LG = DATA.league;
+const short = {1:"Pukachu",2:"Mela-Mid",3:"LOVErs",4:"Starvin",5:"DaaAyum",6:"Ass or Tets",7:"Nabers QB",8:"POOL",9:"Joshin",10:"Jelqers",11:"Njigba",12:"GilgBoys"};
+const who = {1:"Josh",2:"Mat",3:"Robel",4:"Adam",5:"Owen",6:"Zayan",7:"Mason",8:"Oliver",9:"Mikey",10:"Ryan",11:"Dan",12:"Gilger"};
+const vibe = {2:["FRAUD WATCH","hot"],4:["HIGH HORSE"],11:["AIMING SOMEWHERE"],10:["SCHEDULE MERCHANT"],6:["DONATING PLAYERS","hot"],12:["DEION FACTORY"],1:["MAMBA MODE"],3:["EEYORE"],5:["BIRTHDAY BOY"],9:["SUFFERING"],7:["CURSED","hot"],8:["DON'T ASK"]};
+const f1=n=>n.toFixed(1), f2=n=>n.toFixed(2);
+const SVGNS="http://www.w3.org/2000/svg";
+function el(tag,attrs={},parent,text){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+const $=id=>document.getElementById(id);
+document.querySelectorAll('.wk').forEach(e=>e.textContent=LG.week);
+function scroller(svg,id){const sc=document.createElement('div');sc.className='hscroll';const inner=document.createElement('div');inner.appendChild(svg);sc.appendChild(inner);$(id).appendChild(sc);}
+
+/* ---------- routing: each segment is its own page, addressed by #id ---------- */
+const PAGES=[
+ ["home","Cover",""],
+ ["standings","Standings","Who's in, who's out, and who's on fraud watch."],
+ ["luck","Luck Lab","Ryan's 6–27 all-play record and the five losses that were the manager's fault."],
+ ["bench","Start/Sit","179 points on Oliver's bench and a team that benched its own namesake."],
+ ["games","Games","Every matchup ranked from coin flip to crime scene."],
+ ["draft","Draft","Purdy at 133, and whatever Mikey did in rounds 1–3."],
+ ["office","Front Office","Trades, waivers, and Zayan's ongoing charity work."],
+ ["nicknames","Nicknames","379 nicknames, 20 Deions, 13 Kyle Pittses, and the Beef Board."],
+ ["awards","Superlatives","One roast per manager. No survivors."],
+ ["picks","Predictions","Adam's official power rankings, delivered from atop the high horse."],
+];
+$('nav').innerHTML=PAGES.slice(1).map(([id,label])=>`<a href="#${id}" data-page="${id}">${label}</a>`).join('');
+$('toc').innerHTML=PAGES.slice(1).map(([id,label,blurb],i)=>`<a href="#${id}"><span class="no">${i+1}</span><b>${label}</b><span>${esc(blurb)}</span></a>`).join('');
+PAGES.forEach(([id],i)=>{
+  if(!i)return;
+  const prev=PAGES[i-1],next=PAGES[i+1],p=document.createElement('div');p.className='pager';
+  p.innerHTML=`<a href="#${prev[0]}">← ${prev[1]}</a>`+(next?`<a class="next" href="#${next[0]}">Next: ${next[1]} →</a>`:`<a class="next" href="#home">Back to the cover →</a>`);
+  $('p-'+id).querySelector('.wrap').appendChild(p);
+});
+function route(){
+  let id=location.hash.slice(1); if(!PAGES.some(p=>p[0]===id))id='home';
+  PAGES.forEach(([p])=>$('p-'+p).hidden=p!==id);
+  document.querySelectorAll('#nav a').forEach(a=>{
+    if(a.dataset.page===id){a.setAttribute('aria-current','page');a.scrollIntoView({block:'nearest',inline:'nearest'});}
+    else a.removeAttribute('aria-current');
+  });
+  window.scrollTo(0,0);
+}
+addEventListener('hashchange',route); route();
+
+/* ---------- tooltip + bar list helper ---------- */
+const tip=$('tip');
+document.addEventListener('pointermove',e=>{
+  const t=e.target.closest('[data-tip]');
+  if(!t||!t.getAttribute('data-tip')){tip.hidden=true;return;}
+  tip.innerHTML=t.getAttribute('data-tip');tip.hidden=false;
+  const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;
+  if(x+w>innerWidth-8)x=e.clientX-w-14; if(y+h>innerHeight-8)y=e.clientY-h-14;
+  tip.style.left=x+'px';tip.style.top=y+'px';
+});
+function bars(id,rows,{fmt=v=>v,color='var(--turf)',max,wide}={}){
+  const m=max??Math.max(...rows.map(r=>r.v),1);
+  $(id).innerHTML=rows.map(r=>`<div class="barrow${wide?' wide':''}" data-tip="${esc(r.tip||'')}"><span class="n" title="${esc(r.n)}">${esc(r.n)}</span><span class="t"><span class="b" style="width:${Math.max(r.v/m*100,0)}%;background:${r.c||color}"></span></span><span class="v">${fmt(r.v)}</span></div>`).join('');
+}
+const tn=t=>`${who[t.rid]} · ${short[t.rid]}`;
+
+/* ---------- cover ---------- */
+$('season-line').textContent=`${LG.name} · ${LG.season} season · Week ${LG.week} in the books`;
+const allScores=DATA.games.flatMap(g=>[{rid:g.w,s:g.ws,wk:g.wk},{rid:g.l,s:g.ls,wk:g.wk}]).sort((a,b)=>b.s-a.s);
+const topPerf=DATA.perfs[0];
+$('ticker').innerHTML=[
+  [f2(allScores[0].s),`Season-high week: ${who[allScores[0].rid]}, wk ${allScores[0].wk}. Fraud watch intensifies.`],
+  [f2(allScores.at(-1).s),`Season-low week: ${who[allScores.at(-1).rid]}, wk ${allScores.at(-1).wk}. Too busy drafting trade offers to set a lineup.`],
+  [`${topPerf.pts}`,`Best player week: ${topPerf.player} for ${who[topPerf.rid]}. For once, Dan aimed at the right target and not Mason's chair.`],
+  [`$${T[1].faab}`,`FAAB Josh has spent. All of it. Kobe never passed either.`],
+].map(([b,s])=>`<div><b class="num">${b}</b><small>${esc(s)}</small></div>`).join('');
+
+/* ---------- standings ---------- */
+const standings=[...teams].sort((a,b)=>b.w-a.w||b.pf-a.pf);
+$('standings').innerHTML=`<thead><tr><th></th><th>Team</th><th>Status</th><th>Record</th><th>Form</th><th class="r">PF</th><th class="r">PA</th><th class="r">Max PF</th><th>Lineup efficiency</th></tr></thead><tbody>`+
+standings.map((t,i)=>`<tr class="${i===LG.playoffTeams-1?'playoff-line':''}"><td class="rank num">${i+1}</td>
+<td><div class="tname">${esc(t.name)}</div><div class="owner">${esc(who[t.rid])} · @${esc(t.owner)}</div></td>
+<td><span class="pill ${vibe[t.rid][1]||''}">${vibe[t.rid][0]}</span></td>
+<td class="num" style="font-family:var(--label);font-weight:700;font-size:18px">${t.w}–${t.l}</td>
+<td><div class="chips">${t.res.map(r=>`<span class="chip ${r}">${r}</span>`).join('')}</div></td>
+<td class="r num">${f2(t.pf)}</td><td class="r num">${f2(t.pa)}</td><td class="r num">${f2(t.maxpf)}</td>
+<td><div class="effbar"><div class="track"><div class="fill" style="width:${Math.max((t.eff-70)/30*100,4)}%"></div></div><span class="num" style="font-family:var(--label);font-weight:600">${t.eff}%</span></div></td></tr>`).join('')+`</tbody>`;
+$('standcall').innerHTML=`Mat is the reigning champ, 3–0, with the most points in the league. Nobody is this good legitimately. He's on <b>fraud watch</b> until further notice. Meanwhile Oliver is 0–3 with the worst lineup efficiency in the league (${T[8].eff}%). His lineups are wrong more often than his karaoke lyrics.`;
+
+/* ---------- luck ---------- */
+(function(){
+  const rows=[...teams].map(t=>({...t,luck:t.w-t.xw})).sort((a,b)=>b.luck-a.luck);
+  const W=520,rowH=30,L=80,R=20,Tp=24,H=Tp+rows.length*rowH+10,mx=LG.week;
+  const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Actual versus expected wins per team'});
+  const x=v=>L+v/mx*(W-L-R);
+  for(let v=0;v<=mx;v++){el('line',{x1:x(v),x2:x(v),y1:Tp-6,y2:H-6,class:'grid'},s);el('text',{x:x(v),y:Tp-10,'text-anchor':'middle',class:'muted'},s,v+(v===mx?' wins':''));}
+  rows.forEach((t,i)=>{
+    const y=Tp+i*rowH+rowH/2,c=t.luck>=0?'var(--good)':'var(--bad)';
+    el('text',{x:L-10,y:y+4,'text-anchor':'end'},s,who[t.rid]);
+    el('line',{x1:x(t.xw),x2:x(t.w),y1:y,y2:y,stroke:c,'stroke-width':4,'stroke-linecap':'round'},s);
+    el('circle',{cx:x(t.xw),cy:y,r:6,fill:'var(--card)',stroke:'var(--muted)','stroke-width':2},s);
+    el('circle',{cx:x(t.w),cy:y,r:7,fill:'var(--ink)',stroke:'var(--card)','stroke-width':2},s);
+    el('rect',{x:L,y:y-rowH/2,width:W-L-R,height:rowH,fill:'transparent','data-tip':`<b>${esc(t.name)}</b> (${who[t.rid]})<br>Actual: ${t.w}–${t.l}<br>Expected wins: ${f2(t.xw)}<br>All-play: ${t.allw}–${t.alll}<br>Luck: ${t.luck>=0?'+':''}${f2(t.luck)} wins`},s);
+  });
+  $('luck').appendChild(s);
+  const j=T[10];
+  $('luckcall').innerHTML=`Ryan is 2–1 with an all-play record of <b>${j.allw}–${j.alll}</b>. Both of his wins came against teams whose <i>bench</i> could have beaten him. He's not a fantasy manager, he's a beneficiary.`;
+})();
+(function(){
+  const rows=[...teams].sort((a,b)=>b.pf-a.pf);
+  const all=rows.flatMap(t=>t.weekly),mn=Math.min(...all),mx=Math.max(...all);
+  const nW=rows[0].weekly.length,W=520,L=70,Tp=24,rowH=30,cw=(W-L-70)/nW,H=Tp+rows.length*rowH;
+  const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Weekly scores heatmap'});
+  for(let w=0;w<nW;w++)el('text',{x:L+w*cw+cw/2,y:14,'text-anchor':'middle',class:'muted'},s,'Week '+(w+1));
+  el('text',{x:W-30,y:14,'text-anchor':'middle',class:'muted'},s,'Total');
+  rows.forEach((t,i)=>{
+    const y=Tp+i*rowH;
+    el('text',{x:L-10,y:y+rowH/2+4,'text-anchor':'end'},s,who[t.rid]);
+    t.weekly.forEach((v,w)=>{
+      const pct=Math.round(12+(v-mn)/(mx-mn)*88);
+      el('rect',{x:L+w*cw+1,y:y+1,width:cw-2,height:rowH-2,rx:3,style:`fill:color-mix(in oklab,var(--turf) ${pct}%,var(--card))`,'data-tip':`<b>${esc(t.name)}</b><br>Week ${w+1}: ${f2(v)} pts (${t.res[w]==='W'?'won':'lost'})`},s);
+      el('text',{x:L+w*cw+cw/2,y:y+rowH/2+4,'text-anchor':'middle',style:`fill:${pct>55?'#F4F8F1':'var(--ink)'};pointer-events:none;font-weight:600`},s,f1(v));
+    });
+    el('text',{x:W-30,y:y+rowH/2+4,'text-anchor':'middle',style:'font-weight:700'},s,f1(t.pf));
+  });
+  $('heat').appendChild(s);
+  $('heatcall').innerHTML=`Mat hasn't dropped below 150 all season, with a team named after a player he doesn't own. Zayan dropped a <b>77.54</b> in week 3, the season low, presumably while drafting a trade offer to someone who had already said no.`;
+})();
+const blownJoke={9:"Mikey's bench is undefeated. Mikey is not. Peak Commanders experience.",8:"Oliver had the win sitting right there and chose violence against himself.",5:"Lost by 1.14 in his birthday month. Oweenie's cake was also on the bench."};
+$('blown').innerHTML=DATA.blown.map(b=>`<div><b>Wk ${b.wk}: ${esc(who[b.rid])} lost to ${esc(who[b.opp])}</b><div class="sc num">${f2(b.score)} – ${f2(b.opps)} · best lineup: <em>${f2(b.best)}</em></div><p>${esc(blownJoke[b.rid]||'')}</p></div>`).join('');
+
+/* ---------- bench ---------- */
+bars('bench',[...teams].sort((a,b)=>b.bench-a.bench).map(t=>({n:tn(t),v:t.bench,c:t.rid===8?'var(--sauce)':undefined,tip:`<b>${esc(t.name)}</b><br>${f2(t.bench)} bench pts · ${t.eff}% efficiency`})),{fmt:f1});
+bars('blunders',DATA.blunders.map(p=>({n:`${p.player} · ${who[p.rid]}`,v:p.pts,c:'var(--sauce)',tip:`<b>${esc(p.player)}</b> scored ${p.pts} on the bench<br>${esc(T[p.rid].name)}, week ${p.wk}`})),{fmt:f2,wide:true});
+
+/* ---------- games ---------- */
+(function(){
+  const g=[...DATA.games].sort((a,b)=>a.margin-b.margin);
+  const W=1000,L=230,R=60,rowH=24,Tp=24,H=Tp+g.length*rowH+4,mx=Math.ceil(Math.max(...g.map(x=>x.margin))/20)*20;
+  const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Margin of victory for every game'});
+  const x=v=>L+v/mx*(W-L-R);
+  for(let v=0;v<=mx;v+=20){el('line',{x1:x(v),x2:x(v),y1:Tp-6,y2:H,class:'grid'},s);el('text',{x:x(v),y:Tp-10,'text-anchor':'middle',class:'muted'},s,v+(v===mx?' pts':''));}
+  g.forEach((m,i)=>{
+    const y=Tp+i*rowH,c=m.margin<5?'var(--yolk)':m.margin>50?'var(--sauce)':'var(--turf)';
+    el('text',{x:L-10,y:y+rowH/2+4,'text-anchor':'end'},s,`Wk ${m.wk} · ${who[m.w]} over ${who[m.l]}`);
+    el('rect',{x:x(0),y:y+4,width:Math.max(x(m.margin)-x(0),3),height:rowH-8,rx:3,fill:c,'data-tip':`<b>Week ${m.wk}</b><br>${esc(T[m.w].name)} ${f2(m.ws)}<br>${esc(T[m.l].name)} ${f2(m.ls)}<br>Margin: ${f2(m.margin)}`},s);
+    el('text',{x:x(m.margin)+6,y:y+rowH/2+4,style:'font-weight:600'},s,f2(m.margin));
+  });
+  $('margins').innerHTML='<div class="legend"><span><i style="background:var(--yolk);border-radius:2px"></i>Coin flip (under 5)</span><span><i style="background:var(--turf);border-radius:2px"></i>Normal</span><span><i style="background:var(--sauce);border-radius:2px"></i>Call the authorities (over 50)</span></div>';
+  scroller(s,'margins');
+})();
+
+/* ---------- draft ---------- */
+(function(){
+  const pos=['QB','RB','WR','TE','K','DEF'],col={QB:'var(--qb)',RB:'var(--rb)',WR:'var(--wr)',TE:'var(--te)',K:'var(--k)',DEF:'var(--def)'};
+  $('poslegend').innerHTML=pos.map(p=>`<span><i style="background:${col[p]}"></i>${p}</span>`).join('');
+  const n=DATA.draft.length,rounds=Math.max(...DATA.draft.map(d=>d.rnd)),per=n/rounds;
+  const W=1000,H=440,L=50,R=20,Tp=16,B=40,mxY=Math.ceil(Math.max(...DATA.draft.map(d=>d.pts))/25)*25;
+  const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Draft pick versus points scored'});
+  const x=v=>L+(v-1)/(n-1)*(W-L-R),y=v=>H-B-v/mxY*(H-B-Tp);
+  for(let v=0;v<=mxY;v+=25){el('line',{x1:L,x2:W-R,y1:y(v),y2:y(v),class:'grid'},s);el('text',{x:L-8,y:y(v)+4,'text-anchor':'end',class:'muted'},s,v);}
+  for(let r=1;r<=rounds;r++){el('text',{x:x((r-1)*per+per/2+.5),y:H-B+18,'text-anchor':'middle',class:'muted'},s,'R'+r);if(r<rounds)el('line',{x1:x(r*per+.5),x2:x(r*per+.5),y1:Tp,y2:H-B,class:'grid','stroke-dasharray':'2 4'},s);}
+  el('text',{x:(W+L)/2,y:H-4,'text-anchor':'middle',class:'muted'},s,`Draft round (pick 1 → ${n})`);
+  DATA.draft.forEach(p=>el('circle',{cx:x(p.pick),cy:y(p.pts),r:6,fill:col[p.pos],stroke:'var(--card)','stroke-width':1.5,'data-tip':`<b>${esc(p.name)}</b> (${p.pos})<br>Pick ${p.pick} (R${p.rnd}) by ${esc(who[p.by])}<br>${f2(p.pts)} pts`},s));
+  const lab=[['Jaxon Smith-Njigba','JSN (Dan)',10,-4,'start'],['Jahmyr Gibbs','Gibbs (Adam)',10,4,'start'],['Brock Purdy','Purdy (Mat)',0,-12,'middle'],['Patrick Mahomes','Mahomes (Josh)',10,4,'start'],['Jared Goff','Goff (Robel)',0,-12,'middle'],['Josh Jacobs','Jacobs (Mikey)',8,-8,'start'],['A.J. Brown','A.J. Brown (Mikey)',8,-8,'start'],['Puka Nacua','Puka (Josh)',10,4,'start'],['Josh Allen','Allen (Dan)',10,4,'start']];
+  lab.forEach(([nm,label,dx,dy,a])=>{const p=DATA.draft.find(d=>d.name===nm);if(!p)return;el('text',{x:x(p.pick)+dx,y:y(p.pts)+dy,'text-anchor':a,style:'font-weight:600;pointer-events:none'},s,`${label} ${f1(p.pts)}`);});
+  scroller(s,'draft');
+})();
+
+/* ---------- office ---------- */
+bars('adds',[...teams].sort((a,b)=>b.adds-a.adds).map(t=>({n:tn(t),v:t.adds,tip:`<b>${esc(t.name)}</b><br>${t.adds} adds · ${t.failed} failed claims`})));
+bars('trades',[...teams].sort((a,b)=>b.trades-a.trades).map(t=>({n:tn(t),v:t.trades,c:t.rid===6?'var(--sauce)':undefined,tip:`<b>${esc(t.name)}</b><br>${t.trades} trades`})));
+bars('faab',[...teams].sort((a,b)=>b.faab-a.faab).map(t=>({n:tn(t),v:t.faab,c:t.faab>=100?'var(--sauce)':undefined,tip:`<b>${esc(t.name)}</b><br>$${t.faab} of $100 spent`})),{fmt:v=>'$'+v,max:100});
+(function(){
+  const rows=[...teams].filter(t=>t.trades>0).sort((a,b)=>b.tradenet-a.tradenet);
+  const W=1000,L=170,R=60,rowH=30,Tp=24,H=Tp+rows.length*rowH+4,mx=Math.ceil(Math.max(...rows.map(t=>Math.abs(t.tradenet)))/20)*20;
+  const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Net trade points by team'});
+  const x=v=>L+(v+mx)/(2*mx)*(W-L-R);
+  for(let v=-mx;v<=mx;v+=20){el('line',{x1:x(v),x2:x(v),y1:Tp-6,y2:H,class:'grid',style:v===0?'stroke:var(--muted)':''},s);el('text',{x:x(v),y:Tp-10,'text-anchor':'middle',class:'muted'},s,(v>0?'+':'')+v);}
+  rows.forEach((t,i)=>{
+    const y=Tp+i*rowH,v=t.tradenet;
+    el('text',{x:L-10,y:y+rowH/2+4,'text-anchor':'end'},s,`${who[t.rid]} (${t.trades} trades)`);
+    el('rect',{x:x(Math.min(0,v)),y:y+5,width:Math.max(Math.abs(x(v)-x(0)),3),height:rowH-10,rx:3,fill:v>=0?'var(--good)':'var(--bad)','data-tip':`<b>${esc(t.name)}</b><br>${t.trades} trades · net ${v>=0?'+':''}${f1(v)} pts`},s);
+    el('text',{x:v>=0?x(v)+6:x(v)-6,y:y+rowH/2+4,'text-anchor':v>=0?'start':'end',style:'font-weight:600'},s,(v>=0?'+':'')+f1(v));
+  });
+  scroller(s,'ledger');
+})();
+
+/* ---------- nicknames ---------- */
+$('nicktotal').textContent=teams.reduce((a,t)=>a+t.nicks,0);
+bars('nicks',[...teams].sort((a,b)=>b.nicks-a.nicks).map(t=>({n:tn(t),v:t.nicks,c:'var(--yolk)',tip:`<b>${esc(t.name)}</b><br>${t.nicks} player nicknames`})));
+const beef=[
+ ["Thanks Ryan","Jaylen Warren",2,"Mat, about a player Ryan also once nicknamed. The reigning champ gloats in nickname form."],
+ ["Cheers to Robel","Puka Nacua",2,"Mat again, raising a glass to Robel for reasons only Mat understands."],
+ ["F*** u Adam","Chris Godwin",3,"Beezy, saying what the whole league thinks every time the Super Bowl comes up."],
+ ["Mads has horrible taste","Justin Herbert",4,"Adam, from atop the high horse, judging someone else's taste."],
+ ["(Mela)mid defense","Seattle Seahawks",5,"Owen insulting Mat and Adam's Seahawks in one nickname. Big brain, finally used."],
+];
+$('beef').innerHTML=beef.map(([q,p,r,c])=>`<div class="quote beef"><q>${esc(q)}</q><div>${esc(p)} · ${esc(who[r])}'s roster<br>${esc(c)}</div></div>`).join('');
+const quotes=[
+ ["Ba-da-ba-da-ba-be bop bop bodda bope Bop ba bodda","Cam Skattebo",3],
+ ["The Ref Fluffer","Patrick Mahomes",12],
+ ["Prodigal Son","Brock Purdy",2],
+ ["Guy if u start gets 0","Quentin Johnston",2],
+ ["Ryan Gosling","Jared Goff",6],
+ ["Chris Agave Oil","Chris Olave",6],
+ ["Dr. Penguin","Jaylen Waddle",6],
+ ["Staff infection","Matthew Stafford",3],
+ ["Green Bay Packers Legend","Aaron Jones",3],
+ ["Mr consistently injured","Mike Evans",4],
+ ["Curious george (can i get more than 5pts?)","George Pickens",5],
+ ["1-4","Patrick Mahomes",8],
+ ["Mike Evans","Mike Evans",8],
+ ["Lamar hand this man the ball","Derrick Henry",1],
+ ["TUTENKHAMEN","Bhayshul Tuten",12],
+ ["Kay adams","Davante Adams",9],
+ ["Working on his left jelq","Jayden Daniels",10],
+ ["Littlefoot","Cam Little (Dan's only nickname)",11],
+];
+$('quotes').innerHTML=quotes.map(([q,p,r])=>`<div class="quote"><q>${esc(q)}</q><div>${esc(p)} · ${esc(who[r])}</div></div>`).join('');
+
+/* ---------- superlatives ---------- */
+const AW={
+ 2:["Fraud Watch: Level Orange","Reigning champ. 3–0. All-play 31–2. His top scorer is a 12th-round Brock Purdy he nicknamed 'Prodigal Son.' His team is named 'Gibbs is Mela-Mid' and he doesn't roster Gibbs, which is like trash-talking a guy who doesn't know you exist and winning anyway. Mat, the league has opened a formal investigation. Please surrender your passport.",t=>[`${t.allw}–${t.alll} all-play`,`${t.eff}% efficiency`,`Purdy: pick 133`]],
+ 4:["Still on the Parade Float","Adam hasn't gotten off his high horse since the Seahawks won the Super Bowl. Number of Seahawks on his roster: zero. Mikey, a Commanders fan, has two. Took Gibbs first overall (98.3 points), is 3–0, and we will hear about it at Lumen Field decibel levels. Has cut AJ Barner three separate times. That's not roster management, that's a situationship.",t=>[`${t.adds} adds`,`0 Seahawks`,`Barner: cut 3×`]],
+ 11:["Aims Perfectly, Just Not at Toilets","Dan named his team 'Njigba Please…' and is, by a comfortable margin, the whitest man in the league. Highest max PF in the league (502.1), zero waiver adds, one nickname ever. JSN and Josh Allen have exactly 200 points between them. His lineup is the only thing Dan has ever aimed correctly. Mason still won't sit in that chair.",t=>[`${f1(t.maxpf)} max PF`,`0 adds`,`Trades: +${f1(t.tradenet)}`]],
+ 10:["Schedule Merchant (Your Host)","2–1 with an all-play record of 6–27. Expected wins: 0.55. Both of his wins came against teams whose bench would have beaten him. Has Jayden Daniels on IR and 13 players renamed 'Kyle Pitts.' This isn't a fantasy team. It's a hostage situation with a winning record, and the hostage is everyone else.",t=>[`+${f2(t.w-t.xw)} luck`,`${t.allw}–${t.alll} all-play`,`13× "Kyle Pitts"`]],
+ 6:["The Charity Case","Seven trades in three weeks and the worst trade ledger in the league at −59.8 points. Gave away Harold Fannin and Quinshon Judkins, got back Kyle Monangai and 1.4 points of Dallas Goedert. Then scored 77.54 in week 3, the season low. Zayan doesn't make trades, he makes donations. Every manager has his number saved as 'Free Players.'",t=>[`${t.trades} trades`,`Net: ${f1(t.tradenet)} pts`,`77.54 wk 3`]],
+ 12:["The Rooney Family Award","Connor (or Gilger, he answers to both) has made zero transactions. No adds, no trades, nothing. Hire once, never fire, die on the hill. Left Kelce's 25.1 on the bench in week 2, which Taylor Swift is already writing a breakup song about. Has named 20 different players some version of 'Deion,' including 'Washed Deion,' 'Cold Deion,' and 'Deion Civilization.' Coach Prime is either honored or concerned.",t=>[`0 moves`,`${f2(t.pa)} PA`,`20 Deions`]],
+ 1:["Mamba Mentality (Shot Selection Edition)","Josh treats the waiver wire like Kobe treated a triple team: shoot anyway. 21 adds and the entire $100 FAAB budget gone by week 3. His first-round pick and namesake, Puka, has 12.4 points. Josh will tell you Kobe hit free throws on a torn Achilles. Josh, Kobe is not walking through that door, and neither is your FAAB.",t=>[`$${t.faab}/$100 FAAB`,`${t.adds} adds`,`Puka: 12.4 (R1)`]],
+ 3:["Eeyore of the Frozen Tundra","Robel (Beezy to his friends, Eeyore to the rest of us), a sad Packers fan, drafted Jordan Love and Christian Watson, gave 27 players '-iddy' nicknames, and has faced 446.08 points against, the most in the league. Every opponent saves their best week for him. Benched Jared Goff, the GOFF in his own team name, for a 29.78-point week. Beezy doesn't play fantasy football. He endures it.",t=>[`${f2(t.pa)} PA (most)`,`Goff: 29.78 benched`,`2 Packers`]],
+ 5:["Big Brain, Small Lineup","Happy birthday, Oweenie. One of the smartest people we know, and his trades prove it (+38.7, best in the league). Then Sunday arrives and the brain goes on airplane mode: 165.9 bench points, 7 failed waiver claims, and a 1.14-point loss to Zayan, of all people, with a 127.72-point lineup on the roster. Blew out the candles and the lineup in the same week.",t=>[`Trades: +${f1(t.tradenet)}`,`${f1(t.bench)} bench pts`,`${t.failed} failed claims`]],
+ 9:["Commanders Fan, Suffering as Designed","Mikey's best possible lineup is 3–0. His actual lineup is 1–2. His bench had enough to win in week 1 and week 3, including Sam Darnold scoring 29.66 while benched. His first three picks have 30.2 combined points and Josh Jacobs has 0.0. As a Commanders fan, Mikey has seen worse. Not much worse.",t=>[`R1–R3: 30.2 pts`,`Bench: 2 wins`,`Darnold: 29.66 benched`]],
+ 7:["Cursed, Right on Schedule","Mason's team dies every year and 2026 is punctual. McCaffrey, Nabers and Kittle all came into the season tagged questionable, and his team name already declared the QB dead. Fewest points in the league. Lost week 1 by 70.38, the worst beatdown of the year. Zero nicknames, because you don't name a pet you know won't make it to Thanksgiving. Even his furniture isn't safe. Ask Dan.",t=>[`${f2(t.pf)} PF (last)`,`−70.38 in wk 1`,`0 nicknames`]],
+ 8:["We're Not Repeating What Oliver Said","0–3 with 179.46 points on the bench, the most in the league. His best lineup would have won weeks 1 and 2. He started the Packers D for −2.0 like a man four drinks deep with something to prove. We won't print what Oliver says when he's drunk, but based on his lineups it's 'start the Packers D.' He nicknamed Mahomes '1-4.' That's also Oliver's ceiling.",t=>[`${f1(t.bench)} bench pts`,`${t.eff}% efficiency`,`GB D/ST: −2.0`]],
+};
+$('awards').innerHTML=standings.map(t=>{const [title,joke,st]=AW[t.rid];return `<article class="award"><header><span class="t">${esc(t.name)}</span><span class="rec num">${t.w}–${t.l}</span></header><div class="body"><div class="trophy">${esc(who[t.rid])} · @${esc(t.owner)}</div><h4>${esc(title)}</h4><p>${esc(joke)}</p><div class="stats">${st(t).map(x=>`<span>${esc(x)}</span>`).join('')}</div></div></article>`}).join('');
+
+/* ---------- predictions ---------- */
+const model=[...teams].sort((a,b)=>b.proj-a.proj||b.pf-a.pf);
+const modelRank=Object.fromEntries(model.map((t,i)=>[t.rid,i+1]));
+bars('model',model.map((t,i)=>({n:`${i+1}. ${tn(t)}`,v:t.proj,c:i<LG.playoffTeams?'var(--turf)':'var(--muted)',tip:`<b>${esc(t.name)}</b><br>Projected: ${f1(t.proj)}–${f1(LG.regWeeks-t.proj)}<br>All-play win rate: ${Math.round(100*t.allw/(t.allw+t.alll))}%`})),{fmt:v=>`${f1(v)}–${f1(LG.regWeeks-v)}`,max:LG.regWeeks,wide:true});
+$('modelcall').innerHTML=`The spreadsheet has Mat finishing around ${f1(T[2].proj)}–${f1(LG.regWeeks-T[2].proj)}, which is either dominance or the biggest fraud in league history. It has Ryan finishing ${modelRank[10]}th, and Adam has him 11th. The spreadsheet doesn't believe in schedule luck. Ryan has built a lifestyle on it.`;
+
+let PICKS=DATA.picks||null,pickDb=null,canEdit=false,editing=false,draftOrder=null,draftTakes={};
+function renderPicks(){
+  const box=$('picks'),tools=$('picktools');
+  tools.hidden=!canEdit;
+  if(editing){
+    tools.innerHTML=`<button class="btn primary" id="savePicks">Save picks</button><button class="btn" id="cancelPicks">Cancel</button><span class="status" id="pickstatus">Use the arrows to rank. No. 1 is the champ.</span>`;
+    box.innerHTML=`<ol class="picklist">${draftOrder.map((rid,i)=>{const t=T[rid];return `<li class="${i===0?'champ':''} ${i===LG.playoffTeams?'cut':''}"><span class="pr num">${i+1}</span><span class="pt"><b>${esc(t.name)}</b><small>${esc(who[rid])} · ${t.w}–${t.l}</small><input id="take-${rid}" data-rid="${rid}" maxlength="140" placeholder="Hot take (optional)" value="${esc(draftTakes[rid]||'')}"></span><span class="ctl"><button data-mv="-1" data-i="${i}" aria-label="Move ${esc(t.name)} up" ${i===0?'disabled':''}>↑</button><button data-mv="1" data-i="${i}" aria-label="Move ${esc(t.name)} down" ${i===draftOrder.length-1?'disabled':''}>↓</button></span></li>`}).join('')}</ol>`;
+    box.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',()=>draftTakes[inp.dataset.rid]=inp.value));
+    box.querySelectorAll('button[data-mv]').forEach(b=>b.addEventListener('click',()=>{
+      const i=+b.dataset.i,j=i+(+b.dataset.mv);[draftOrder[i],draftOrder[j]]=[draftOrder[j],draftOrder[i]];renderPicks();
+      box.querySelector(`button[data-i="${j}"][data-mv="${b.dataset.mv}"]:not(:disabled)`)?.focus();
+    }));
+    $('cancelPicks').onclick=()=>{editing=false;renderPicks();};
+    $('savePicks').onclick=savePicks;
+    return;
+  }
+  if(canEdit){
+    tools.innerHTML=`<button class="btn primary" id="editPicks">${PICKS?'Edit Adam\'s rankings':'Enter Adam\'s rankings'}</button><span class="status">Only you see this button. Update it whenever Adam changes his mind.</span>`;
+    $('editPicks').onclick=()=>{editing=true;draftOrder=PICKS?[...PICKS.order]:standings.map(t=>t.rid);draftTakes={...(PICKS?.takes||{})};renderPicks();};
+  }
+  if(!PICKS){
+    box.innerHTML=`<div class="empty"><b>Adam's rankings are loading</b><p>${pickDb?'No rankings are saved yet. They show up here as soon as they are entered.':'Adam\'s rankings show up here when this page is open on claude.ai.'}</p></div>`;
+    return;
+  }
+  const when=PICKS.updatedAt?new Date(PICKS.updatedAt).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'';
+  $('pickmeta').textContent=`Locked in${when?' '+when:''} · Top ${LG.playoffTeams} make the playoffs · No. 1 is the champ`;
+  box.innerHTML=`<ol class="picklist">${PICKS.order.map((rid,i)=>{const t=T[rid];if(!t)return'';const d=modelRank[rid]-(i+1),take=PICKS.takes?.[rid];return `<li class="${i===0?'champ':''} ${i===LG.playoffTeams?'cut':''}"><span class="pr num">${i+1}</span><span class="pt"><b>${esc(t.name)}${i===0?' <span class="pill">ADAM\'S CHAMP</span>':''}</b><small>${esc(who[rid])} · ${t.w}–${t.l}${take?' · '+esc(take):''}</small></span><span class="delta ${d>0?'up':d<0?'down':''}" title="The spreadsheet has them ${modelRank[rid]}">${d===0?'= model':d>0?`▲${d} vs model`:`▼${-d} vs model`}</span></li>`}).join('')}</ol>`;
+}
+async function savePicks(){
+  const st=$('pickstatus');st.textContent='Saving…';
+  const takes={};for(const k in draftTakes){const v=(draftTakes[k]||'').trim();if(v)takes[k]=v.slice(0,140);}
+  const doc={order:draftOrder.map(Number),takes,updatedAt:new Date().toISOString()};
+  try{await pickDb.doc('picks/adam').set(doc);PICKS=doc;editing=false;renderPicks();}
+  catch(e){st.textContent=e?.code==='invalid_argument'?'Only the page owner can save rankings.':'Couldn\'t save just now. Try again in a moment.';}
+}
+renderPicks();
+(async()=>{
+  if(!window.claude?.use)return;
+  const [db,user]=await Promise.all([claude.use('db'),claude.use('user')]);
+  pickDb=db;
+  if(!db){renderPicks();return;}
+  canEdit=user?await user.isOwner():false;
+  renderPicks();
+  db.doc('picks/adam').onSnapshot(s=>{
+    const d=s.exists?s.data():null;
+    PICKS=d&&Array.isArray(d.order)?d:(DATA.picks||null);
+    if(!editing)renderPicks();
+  },()=>{});
+})();
+</script>
+
+</body>
+</html>
