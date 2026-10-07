@@ -1,3 +1,5 @@
 # Raw Sleeper export: contains user IDs and full league data. Kept local only.
 sleeper_league_*.json
+# Full NFL player list from Sleeper's API (large, regenerated on demand).
+sleeper_players_nfl.json
 .DS_Store

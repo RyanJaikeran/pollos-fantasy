@@ -21,18 +21,26 @@ weeks = [str(w) for w in range(1, last_week + 1)]
 reg_weeks = d["league"]["settings"]["playoff_week_start"] - 1
 
 
+# Optional full player list (from Sleeper's /players/nfl) to name undrafted waiver pickups.
+PLAYERS = json.load(open("sleeper_players_nfl.json")) if os.path.exists("sleeper_players_nfl.json") else {}
+
+
 def name(pid):
     if pid in info:
         return info[pid]["name"]
     if pid.isalpha():
         return pid + " D/ST"
+    if pid in PLAYERS and PLAYERS[pid].get("name"):
+        return PLAYERS[pid]["name"]
     return None
 
 
 def pos(pid):
     if pid.isalpha():
         return "DEF"
-    return info[pid]["pos"] if pid in info else None
+    if pid in info:
+        return info[pid]["pos"]
+    return PLAYERS.get(pid, {}).get("pos")
 
 
 teams = {}
