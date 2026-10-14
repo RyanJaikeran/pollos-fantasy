@@ -139,6 +139,24 @@ svg .grid{stroke:var(--line);stroke-width:1}
 .quote q{font-family:var(--display);font-size:18px;line-height:1.2;display:block;quotes:"\201C" "\201D";overflow-wrap:anywhere}
 .quote div{font-size:13px;color:var(--muted);margin-top:8px}
 .quote.beef{border-color:var(--sauce)}
+.shame{border:2px solid var(--sauce);display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:center}
+.shame .big{font-family:var(--display);font-size:96px;line-height:.9;color:var(--sauce);grid-row:span 2}
+.shame h3{margin:0}
+.shame p{margin:0}
+.shame .lows{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.shame .lows span{font-family:var(--label);font-size:14px;font-weight:600;border:1px solid var(--line);border-radius:4px;padding:3px 8px;font-variant-numeric:tabular-nums}
+.shame .lows span.me{background:var(--sauce);border-color:var(--sauce);color:#fff}
+@media (max-width:520px){ .shame{grid-template-columns:1fr} .shame .big{grid-row:auto;font-size:72px} }
+.scores .pill{margin-bottom:8px}
+.scores .ln{display:flex;justify-content:space-between;gap:10px;font-family:var(--label);font-size:17px}
+.scores .ln.w{font-weight:700}
+.scores .ln span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.deal{border-top:1px solid var(--line);padding:10px 0}
+.deal:first-child{border-top:0;padding-top:0}
+.deal .side{display:flex;justify-content:space-between;gap:10px;font-size:15px}
+.deal .side b{font-family:var(--label);font-size:16px}
+.deal .verdict{font-family:var(--label);font-size:14px;color:var(--muted);margin-top:4px}
+.moves{margin:0;padding-left:18px;display:grid;gap:8px;font-size:15px}
 .subhead{font-family:var(--label);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:14px;color:var(--muted);margin:28px 0 12px}
 
 /* superlatives */
@@ -191,7 +209,7 @@ footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px 
     <div class="wrap">
       <div class="eyebrow" id="season-line"></div>
       <h1>The Pollos<span>Bowl</span><br>Gazette</h1>
-      <p class="lede">Twelve managers. A reigning champ on fraud watch. A Seahawks fan with fewer Seahawks than a Commanders fan. A Commanders fan who cut his own first-round pick. And Ryan, who has renamed thirteen players "Kyle Pitts" and whose schedule luck finally ran out. Every number here comes from this season's Sleeper data. Every insult comes from the heart.</p>
+      <p class="lede">Twelve managers. A reigning champ who just lost to Jacoby Brissett. A Commanders fan who cut his own first-round pick and now owes the league his second embarrassing video. A trader who has won two of nine deals. A man who drafted the retired Tom Brady. And Ryan, who has renamed thirteen players "Kyle Pitts" and whose schedule luck is gone. Every number here comes from this season's Sleeper data. Every insult comes from the heart.</p>
       <div class="ticker" id="ticker"></div>
     </div>
   </header>
@@ -200,6 +218,38 @@ footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px 
     <div class="toc" id="toc"></div>
   </div>
 </section>
+
+<!-- RECAP -->
+<section class="page" id="p-recap" hidden><div class="wrap">
+  <div class="chyron"><span class="tag">Week&nbsp;<span class="wk"></span></span><h2>The Week in Review</h2></div>
+  <p class="intro">The champ lost to a backup quarterback, the Charity Case got blown out by 55, and the lowest score of the week came from the same man as last week. League rules: lowest score films an embarrassing video. Mikey, roll camera.</p>
+  <div class="panel shame" id="shame"></div>
+  <div class="subhead">Final scores, biggest margin first</div>
+  <div class="blown scores" id="scores"></div>
+  <div class="grid2" style="margin-top:20px">
+    <div class="panel">
+      <h3>Trades of the week</h3>
+      <p class="sub">What each side's new players scored in week <span class="wk"></span></p>
+      <div id="wktrades"></div>
+      <div class="callout">Zayan has now won two of his nine trades. One of the two was against Mikey, which is like bragging that you beat a toddler at chess. Mikey got Rashee Rice and his 0.0 out of it. The other deal sent Bucky Irving to Ryan, and Irving dropped 31.5 the same week.</div>
+    </div>
+    <div class="panel">
+      <h3>The waiver wire</h3>
+      <p class="sub">Roster moves that deserve a closer look</p>
+      <ul class="moves">
+        <li><b>Josh</b> grabbed Jacoby Brissett off free agency with Mahomes on bye and started him against the undefeated champ. Brissett scored 26.28, nine more than Purdy. This morning Josh cut him for a kicker. Kobe never thanked anyone either.</li>
+        <li><b>Zayan</b> added nine players in one week. He picked up T.J. Hockenson, cut him two days later, and watched Mat claim him. He also benched Blake Corum's 16.2. Then he lost by 55.</li>
+        <li><b>Robel</b> spent $1 on kicker Jason Myers. Myers scored 23.0 in his first week, more than eight of Zayan's nine starters.</li>
+        <li><b>Adam</b> picked up the Commanders defense, Mikey's entire personality, then cut it the day before kickoff to start the Raiders. The Raiders scored 0.5. He still won.</li>
+        <li><b>Mikey</b> picked up Roman Wilson and started him that same week. Wilson scored 0.0, the same as the Rashee Rice he just traded for.</li>
+        <li><b>Mat</b> answered his first loss by spending $11 on the Patriots defense. That's a reigning champ in a panic.</li>
+        <li><b>Gilger</b> has made zero moves in five weeks, and he's 1–4.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="subhead">Next week</div>
+  <div class="blown scores" id="upcoming"></div>
+</div></section>
 
 <!-- STANDINGS -->
 <section class="page" id="p-standings" hidden><div class="wrap">
@@ -241,13 +291,13 @@ footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px 
       <h3>Points left on the pine</h3>
       <p class="sub">Total bench points, weeks 1–<span class="wk"></span></p>
       <div class="barlist" id="bench"></div>
-      <div class="callout">Beezy and Oliver are in a dead heat for most points left on the bench: 216.16 to 216.06. A tenth of a point. Beezy is a Packers fan, so finishing first in the wrong category is familiar. Oliver's excuse is whatever he says after four beers, and we're not printing that.</div>
+      <div class="callout">The dead heat is over. Beezy has 280.84 points on his bench, more than 50 ahead of anyone else. This week he benched Jordan Love, a Packers fan benching the Packers' quarterback, for 25.28. In fairness, he started Goff instead and won by 55, so for once the bench was the right call. Beezy is a Packers fan, so finishing first in the wrong category is familiar.</div>
     </div>
     <div class="panel">
       <h3>Biggest bench blunders</h3>
       <p class="sub">Single-week bench scores that should be illegal</p>
       <div class="barlist" id="blunders"></div>
-      <div class="callout">Beezy named his team "jackinGOFF," then benched Jared Goff for his 29.78-point week. Robel is a Packers fan. Self-sabotage is his love language.</div>
+      <div class="callout">New at No. 2: your host benched Jayden Daniels, whom he nicknamed "Working on his left jelq," for 32.26 in week 5, then lost by 44. His team is called the Ambidextrous Jelqers, and he got it wrong with both hands. Beezy, meanwhile, named his team "jackinGOFF" and then benched Jared Goff for a 29.78-point week. Self-sabotage is his love language.</div>
     </div>
   </div>
 </div></section>
@@ -260,7 +310,7 @@ footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px 
     <h3>Margin of victory</h3>
     <p class="sub">Hover a bar for the final score</p>
     <div id="margins"></div>
-    <div class="callout">Closest game of the year: Zayan beat Owen by 1.14 in week 2, while Owen had a 129.12-point lineup sitting on his roster. Happy birthday, Oweenie. Your gift is knowing.</div>
+    <div class="callout">Closest game of the year: Zayan beat Owen by 1.14 in week 2, while Owen had a 129.12-point lineup sitting on his roster. Happy birthday, Oweenie. Your gift is knowing. Newest crime scene: Robel 166.54, Zayan 111.14 in week 5. That 55.4-point margin is the third-biggest blowout of the season, and it happened in a week when Zayan made two trades and nine adds.</div>
   </div>
 </div></section>
 
@@ -274,8 +324,8 @@ footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px 
     <div id="draft"></div>
   </div>
   <div class="grid2" style="margin-top:20px">
-    <div class="panel"><h3>The steal</h3><p class="sub">Pick 133, round 12</p><div class="callout" style="margin-top:0">Mat took Brock Purdy 133rd overall. Purdy has 101.5 points, more than 9 of the 12 first-round picks, and leads a 4–0 team in scoring. We're not saying it's fraud. We're saying the investigation is ongoing and Mat should not leave the state.</div></div>
-    <div class="panel"><h3>The crime scene</h3><p class="sub">Mikey's rounds 1–3</p><div class="callout" style="margin-top:0">Achane, A.J. Brown, Josh Jacobs: 30.2 combined points. Jacobs has 0.0. In week 4 Mikey gave up and dropped Achane, his first-round pick, outright. That's not a draft, that's a Washington front office from the Snyder era. Mikey, you have suffered enough. Unfortunately the regular season is 14 weeks long.</div></div>
+    <div class="panel"><h3>The steal</h3><p class="sub">Pick 133, round 12</p><div class="callout" style="margin-top:0">Mat took Brock Purdy 133rd overall. Purdy has 118.6 points, more than 9 of the 12 first-round picks, and leads a 4–1 team in scoring. Then Josh beat him with Jacoby Brissett. We're not saying it's fraud. We're saying the investigation is ongoing and Mat should not leave the state.</div></div>
+    <div class="panel"><h3>The crime scene</h3><p class="sub">Mikey's rounds 1–3</p><div class="callout" style="margin-top:0">Achane, A.J. Brown, Josh Jacobs: 30.2 combined points. Jacobs has 0.0. In week 4 Mikey gave up and dropped Achane, his first-round pick, outright. That's not a draft, that's a Washington front office from the Snyder era. Five weeks in, Mikey owes the league two embarrassing videos. Unfortunately the regular season is 14 weeks long.</div></div>
   </div>
 </div></section>
 
@@ -292,7 +342,7 @@ footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px 
     <h3>Trade ledger: who's winning their trades</h3>
     <p class="sub">Points that acquired players scored for their new team, minus points that traded-away players scored for theirs</p>
     <div id="ledger"></div>
-    <div class="callout">Zayan has made eight trades and is down 47.1 points on them, the worst ledger in the league. In week 4, Tetairoa McMillan scored 45.2 for him, the best player week of the season. Days later, Zayan traded McMillan to Ryan. Dan leads the league at +39.9 from one trade, for Quinshon Judkins. From Zayan. Zayan isn't trading. He's running a charity, and every other manager is a registered beneficiary.</div>
+    <div class="callout">Zayan has made nine trades and won two of them. He's lost five, two were a wash, and he's down 61.7 points overall. In week 4, Tetairoa McMillan scored 45.2 for him, the best player week of the season, and Zayan traded him to Ryan days later. Owen now leads the league at +114.2, mostly thanks to Drake Maye. The only ledger worse than Zayan's is Mikey's, at −126.6 and 0–3, and one of Zayan's two wins came against Mikey. Zayan isn't trading. He's running a charity, and Mikey is the one beneficiary who still gets turned away.</div>
   </div>
 </div></section>
 
@@ -301,8 +351,8 @@ footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px 
   <div class="chyron"><span class="tag">Segment 7</span><h2>The Nickname Department</h2></div>
   <p class="intro">Sleeper lets you nickname your players. This league took that as a dare: <span id="nicktotal"></span> nicknames across 12 rosters.</p>
   <div class="nickstats">
-    <div class="nickstat"><b class="num">74</b><span>nicknames from Zayan, who spends more time naming players than evaluating them</span></div>
-    <div class="nickstat"><b class="num">32</b><span>"-iddy" nicknames from Beezy (J Gofiddy, K Piddy, C Diddy...). Grief takes many forms.</span></div>
+    <div class="nickstat"><b class="num">80</b><span>nicknames from Zayan, who spends more time naming players than evaluating them</span></div>
+    <div class="nickstat"><b class="num">31</b><span>"-iddy" nicknames from Beezy (J Gofiddy, K Piddy, C Diddy...). Grief takes many forms.</span></div>
     <div class="nickstat"><b class="num">20</b><span>players named some kind of "Deion" by the GilgBoys</span></div>
     <div class="nickstat"><b class="num">13</b><span>players Ryan has renamed "Kyle Pitts." The real Kyle Pitts got dropped by Beezy in week 4.</span></div>
   </div>
@@ -352,7 +402,7 @@ const teams = Object.values(T);
 const LG = DATA.league;
 const short = {1:"Pukachu",2:"Mela-Mid",3:"LOVErs",4:"Starvin",5:"DaaAyum",6:"Ass or Tets",7:"Nabers QB",8:"POOL",9:"Joshin",10:"Jelqers",11:"Njigba",12:"GilgBoys"};
 const who = {1:"Josh",2:"Mat",3:"Robel",4:"Adam",5:"Owen",6:"Zayan",7:"Mason",8:"Oliver",9:"Mikey",10:"Ryan",11:"Dan",12:"Gilger"};
-const vibe = {2:["FRAUD WATCH","hot"],4:["HIGH HORSE"],11:["AIMING SOMEWHERE"],10:["LUCK RAN OUT"],6:["SOMEHOW 3–1","hot"],12:["DEION FACTORY"],1:["MAMBA MODE"],3:["EEYORE"],5:["BIRTHDAY BOY"],9:["SUFFERING"],7:["TRADED HIS NAMESAKE","hot"],8:["DON'T ASK"]};
+const vibe = {2:["FRAUD EXPOSED?","hot"],4:["FIRST PLACE"],11:["3-GAME SKID"],10:["LUCK RAN OUT"],6:["2–7 IN TRADES","hot"],12:["DEION FACTORY"],1:["GIANT SLAYER","hot"],3:["EEYORE"],5:["3 STRAIGHT W"],9:["VIDEO NO. 2","hot"],7:["TRADED HIS NAMESAKE"],8:["2 STRAIGHT W"]};
 const f1=n=>n.toFixed(1), f2=n=>n.toFixed(2);
 const SVGNS="http://www.w3.org/2000/svg";
 function el(tag,attrs={},parent,text){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
@@ -364,13 +414,14 @@ function scroller(svg,id){const sc=document.createElement('div');sc.className='h
 /* ---------- routing: each segment is its own page, addressed by #id ---------- */
 const PAGES=[
  ["home","Cover",""],
+ ["recap","Week 5","Josh beats the champ, Robel wins by 55, and Mikey owes the league video No. 2."],
  ["standings","Standings","Who's in, who's out, and who's on fraud watch."],
- ["luck","Luck Lab","Zayan is 3–1 with a losing all-play record, plus eight losses that were the manager's fault."],
- ["bench","Start/Sit","216 points on Beezy's bench, and a team that benched its own namesake."],
+ ["luck","Luck Lab","Zayan is 3–2 with a 20–35 all-play record, plus eight losses that were the manager's fault."],
+ ["bench","Start/Sit","281 points on Beezy's bench, and your host benched Jayden Daniels."],
  ["games","Games","Every matchup ranked from coin flip to crime scene."],
  ["draft","Draft","Purdy at 133, and whatever Mikey did in rounds 1–3."],
  ["office","Front Office","Trades, waivers, and Zayan's ongoing charity work."],
- ["nicknames","Nicknames","387 nicknames, 20 Deions, 13 Kyle Pittses, and the Beef Board."],
+ ["nicknames","Nicknames","404 nicknames, 20 Deions, 13 Kyle Pittses, and the Beef Board."],
  ["awards","Superlatives","One roast per manager. No survivors."],
  ["picks","Predictions","Adam's official power rankings, delivered from atop the high horse."],
 ];
@@ -410,6 +461,9 @@ function bars(id,rows,{fmt=v=>v,color='var(--turf)',max,wide}={}){
 const tn=t=>`${who[t.rid]} · ${short[t.rid]}`;
 
 /* ---------- cover ---------- */
+// Lowest score each week. League rule: that manager films an embarrassing video.
+const lows=[...new Set(DATA.games.map(g=>g.wk))].sort((a,b)=>a-b).map(w=>({wk:w,...DATA.games.filter(g=>g.wk===w).flatMap(g=>[{rid:g.w,s:g.ws},{rid:g.l,s:g.ls}]).sort((a,b)=>a.s-b.s)[0]}));
+const goat=lows.at(-1),videos=lows.filter(l=>l.rid===goat.rid).length;
 $('season-line').textContent=`${LG.name} · ${LG.season} season · Week ${LG.week} in the books`;
 const allScores=DATA.games.flatMap(g=>[{rid:g.w,s:g.ws,wk:g.wk},{rid:g.l,s:g.ls,wk:g.wk}]).sort((a,b)=>b.s-a.s);
 const topPerf=DATA.perfs[0];
@@ -417,8 +471,46 @@ $('ticker').innerHTML=[
   [f2(allScores[0].s),`Season-high week: ${who[allScores[0].rid]}, wk ${allScores[0].wk}. Fraud watch intensifies.`],
   [f2(allScores.at(-1).s),`Season-low week: ${who[allScores.at(-1).rid]}, wk ${allScores.at(-1).wk}. Too busy drafting trade offers to set a lineup.`],
   [`${topPerf.pts}`,`Best player week: ${topPerf.player} for ${who[topPerf.rid]}, wk ${topPerf.wk}. Zayan traded him to Ryan days later.`],
-  [`$${T[1].faab}`,`FAAB Josh has spent. All of it. Kobe never passed either.`],
+  [`${videos}`,`Embarrassing videos ${who[goat.rid]} owes the league. Lowest score two weeks running.`],
 ].map(([b,s])=>`<div><b class="num">${b}</b><small>${esc(s)}</small></div>`).join('');
+
+/* ---------- week recap ---------- */
+(function(){
+  const wk=LG.week,gs=DATA.games.filter(g=>g.wk===wk).sort((a,b)=>b.margin-a.margin);
+  // All-play win rate before this week, to spot upsets.
+  const pre=rid=>{let w=0,n=0;for(let i=0;i<wk-1;i++)teams.forEach(t=>{if(t.rid!==rid){n++;if(t.weekly[i]<T[rid].weekly[i])w++;}});return n?w/n:.5;};
+  const rec=t=>`${t.w}–${t.l}`;
+  $('shame').innerHTML=`<div class="big num">${videos}</div><h3>${esc(who[goat.rid])} owes the league video No. ${videos}</h3>
+<p>Lowest score of week ${wk}: <b>${f2(goat.s)}</b>, 14.72 points below anyone else. His best possible lineup was 89.40, which still would have been the lowest score of the week. That makes two weekly lows in a row. Mikey is a Commanders fan, so he's used to watching bad tape. This time he has to make it.</p>
+<div class="lows">${lows.map(l=>`<span class="${l.rid===goat.rid?'me':''}">Wk ${l.wk} low · ${esc(who[l.rid])} ${f2(l.s)}</span>`).join('')}</div>`;
+  const note={
+   1:"Mat came in 4–0 and 42–2 in all-play. Josh came in 2–2 with a losing all-play record and Mahomes on bye, so he started Jacoby Brissett. Brissett outscored Purdy, Puka scored 37.7, and Nabers, fresh from Mason, added 29.1. That's the champ's first loss.",
+   3:"Robel posted the week's high score, with a $1 kicker scoring 23. Zayan made two trades and nine adds and still lost by 55.4, the third-biggest blowout of the season.",
+   4:"Gibbs scored 37.7 and Adam passed Mat for first place on points, by 1.12. Dan scored 153.2, the fourth-best score of the week, and lost anyway. That's three straight losses for Dan.",
+   5:"Drake Maye, the QB Owen got from Mason, scored 39.46, the best player week of week 5. Your host benched Jayden Daniels' 32.26 to start Burrow (24.6). His best possible lineup would still have lost by 26.8. Owen has won three straight.",
+   7:"The Toilet Bowl. Neither team reached 95. Mason won because somebody had to.",
+   8:"In week 1 Oliver benched Isaiah Likely for 27.8. This week he started him, and Likely scored 32.4. That's growth. Gilger has faced the most points in the league, he's 1–4, and he still hasn't made a move."};
+  $('scores').innerHTML=gs.map((g,i)=>{
+    const tags=[];
+    if(i===0)tags.push(['BLOWOUT','hot']);
+    if(pre(g.l)-pre(g.w)>=.25)tags.push(['UPSET','']);
+    if(g.l===goat.rid)tags.push(['SHAME CAM','hot']);
+    return `<div>${tags.map(([t,c])=>`<span class="pill ${c}">${t}</span> `).join('')}
+<div class="ln w"><span>${esc(who[g.w])} · ${esc(short[g.w])}</span><span class="num">${f2(g.ws)}</span></div>
+<div class="ln"><span>${esc(who[g.l])} · ${esc(short[g.l])}</span><span class="num">${f2(g.ls)}</span></div>
+<p>${esc(note[g.w]||'')}</p></div>`;}).join('');
+  const deals={};
+  DATA.trades.filter(t=>t.leg===wk).forEach(t=>{const k=[t.to,t.frm].sort((a,b)=>a-b).join('-');(deals[k]??={})[t.to]??=[];deals[k][t.to].push(t);});
+  $('wktrades').innerHTML=Object.values(deals).map(d=>{
+    const sides=Object.entries(d).map(([rid,ps])=>({rid:+rid,ps,tot:ps.reduce((a,p)=>a+p.pts,0)})).sort((a,b)=>b.tot-a.tot);
+    return `<div class="deal">${sides.map(s=>`<div class="side"><span><b>${esc(who[s.rid])} got</b> ${s.ps.map(p=>`${esc(p.player)} (${f1(p.pts)})`).join(', ')}</span><b class="num">${f1(s.tot)}</b></div>`).join('')}
+<div class="verdict">Week ${wk} winner: ${esc(who[sides[0].rid])}, +${f1(sides[0].tot-(sides[1]?.tot||0))}</div></div>`;}).join('')||'<p class="sub">No trades this week.</p>';
+  const next={"1-11":"Josh just beat the champ. Dan has lost three straight.","2-10":"The champ, fresh off his first loss, against the man who built this website.",
+   "3-8":"Two of the three biggest benches in the league. Expect 30 points on somebody's bench.","4-6":"First place against the luckiest team in the league.",
+   "5-7":"Mason traded Owen Drake Maye, who has scored 66.62 for Owen since. Revenge game.","9-12":"Both teams are 1–4. Whoever loses is the early favorite for the next video."};
+  $('upcoming').innerHTML=(DATA.upcoming||[]).map(p=>{const [a,b]=p.map(r=>T[r]);return `<div><div class="ln w"><span>${esc(who[a.rid])} · ${esc(short[a.rid])}</span><span class="num">${rec(a)}</span></div>
+<div class="ln w"><span>${esc(who[b.rid])} · ${esc(short[b.rid])}</span><span class="num">${rec(b)}</span></div><p>${esc(next[[...p].sort((x,y)=>x-y).join('-')]||'')}</p></div>`;}).join('');
+})();
 
 /* ---------- standings ---------- */
 const standings=[...teams].sort((a,b)=>b.w-a.w||b.pf-a.pf);
@@ -430,7 +522,7 @@ standings.map((t,i)=>`<tr class="${i===LG.playoffTeams-1?'playoff-line':''}"><td
 <td><div class="chips">${t.res.map(r=>`<span class="chip ${r}">${r}</span>`).join('')}</div></td>
 <td class="r num">${f2(t.pf)}</td><td class="r num">${f2(t.pa)}</td><td class="r num">${f2(t.maxpf)}</td>
 <td><div class="effbar"><div class="track"><div class="fill" style="width:${Math.max((t.eff-70)/30*100,4)}%"></div></div><span class="num" style="font-family:var(--label);font-weight:600">${t.eff}%</span></div></td></tr>`).join('')+`</tbody>`;
-$('standcall').innerHTML=`Mat is the reigning champ, ${T[2].w}–${T[2].l}, with the most points in the league, and he just beat Adam in the battle of the unbeatens. Nobody is this good legitimately. He's on <b>fraud watch</b> until further notice. Meanwhile Oliver still has the worst lineup efficiency in the league (${T[8].eff}%). His lineups are wrong more often than his karaoke lyrics.`;
+$('standcall').innerHTML=`Mat is finally beatable. Josh handed the champ his first loss, and Adam took first place from him on points, ${f2(T[4].pf)} to ${f2(T[2].pf)}. That's a 1.12-point lead after five weeks. The <b>fraud watch</b> stays on, because one loss to Jacoby Brissett proves nothing. Meanwhile Oliver has won two straight and still has the worst lineup efficiency in the league (${T[8].eff}%). His lineups are wrong more often than his karaoke lyrics.`;
 
 /* ---------- luck ---------- */
 (function(){
@@ -449,7 +541,7 @@ $('standcall').innerHTML=`Mat is the reigning champ, ${T[2].w}–${T[2].l}, with
   });
   $('luck').appendChild(s);
   const j=T[10];
-  $('luckcall').innerHTML=`Zayan is ${T[6].w}–${T[6].l} with an all-play record of <b>${T[6].allw}–${T[6].alll}</b>, the luckiest record in the league. Ryan (${j.allw}–${j.alll} all-play) held that title until week 4, when Josh beat him while a 126-point lineup sat on Ryan's bench. Both of Ryan's wins came against teams whose <i>bench</i> could have beaten him. He's not a fantasy manager, he's a beneficiary.`;
+  $('luckcall').innerHTML=`Zayan is ${T[6].w}–${T[6].l} with an all-play record of <b>${T[6].allw}–${T[6].alll}</b>, still the luckiest record in the league, even after Robel beat him by 55. Mason is right behind him: ${T[7].w}–${T[7].l} with a ${T[7].allw}–${T[7].alll} all-play, and his week 5 win came over the only team that scored less than he did. Ryan (${j.allw}–${j.alll} all-play) has lost two straight. Both of his wins came against teams whose <i>bench</i> could have beaten him. He's not a fantasy manager, he's a beneficiary.`;
 })();
 (function(){
   const rows=[...teams].sort((a,b)=>b.pf-a.pf);
@@ -469,13 +561,13 @@ $('standcall').innerHTML=`Mat is the reigning champ, ${T[2].w}–${T[2].l}, with
     el('text',{x:W-30,y:y+rowH/2+4,'text-anchor':'middle',style:'font-weight:700'},s,f1(t.pf));
   });
   $('heat').appendChild(s);
-  $('heatcall').innerHTML=`Mat hasn't dropped below 150 all season, with a team named after a player he doesn't own. Zayan dropped a <b>77.54</b> in week 3, the season low, presumably while drafting a trade offer to someone who had already said no.`;
+  $('heatcall').innerHTML=`Mat's streak of 150-point weeks ended at four with a 124.66 against Josh. Zayan's <b>77.54</b> in week 3 is still the season low, but Mikey came within 0.86 of it in week 5. Mikey has had the lowest score in each of the last two weeks, which is how he ended up owing videos No. 1 and No. 2.`;
 })();
 const blownJoke={9:"Mikey's bench would have won both of these. Mikey did not. Peak Commanders experience.",8:"Oliver had the win sitting right there and chose violence against himself.",5:"Lost by 1.14 in his birthday month. Oweenie's cake was also on the bench.",10:"The schedule giveth, and in week 4 the schedule tooketh away.",12:"His best lineup would have won by 0.48. Zero moves all season. Maximum pain.",7:"Lost to a winless Oliver with 150.24 sitting on his roster. Cursed doesn't begin to cover it."};
 $('blown').innerHTML=DATA.blown.map(b=>`<div><b>Wk ${b.wk}: ${esc(who[b.rid])} lost to ${esc(who[b.opp])}</b><div class="sc num">${f2(b.score)} – ${f2(b.opps)} · best lineup: <em>${f2(b.best)}</em></div><p>${esc(blownJoke[b.rid]||'')}</p></div>`).join('');
 
 /* ---------- bench ---------- */
-bars('bench',[...teams].sort((a,b)=>b.bench-a.bench).map(t=>({n:tn(t),v:t.bench,c:(t.rid===8||t.rid===3)?'var(--sauce)':undefined,tip:`<b>${esc(t.name)}</b><br>${f2(t.bench)} bench pts · ${t.eff}% efficiency`})),{fmt:f1});
+bars('bench',[...teams].sort((a,b)=>b.bench-a.bench).map(t=>({n:tn(t),v:t.bench,c:t.rid===3?'var(--sauce)':undefined,tip:`<b>${esc(t.name)}</b><br>${f2(t.bench)} bench pts · ${t.eff}% efficiency`})),{fmt:f1});
 bars('blunders',DATA.blunders.map(p=>({n:`${p.player} · ${who[p.rid]}`,v:p.pts,c:'var(--sauce)',tip:`<b>${esc(p.player)}</b> scored ${p.pts} on the bench<br>${esc(T[p.rid].name)}, week ${p.wk}`})),{fmt:f2,wide:true});
 
 /* ---------- games ---------- */
@@ -566,18 +658,18 @@ $('quotes').innerHTML=quotes.map(([q,p,r])=>`<div class="quote"><q>${esc(q)}</q>
 
 /* ---------- superlatives ---------- */
 const AW={
- 2:["Fraud Watch: Level Red","4–0. All-play 42–2. 98.1% lineup efficiency, which means he starts the right guys every week through either skill or witchcraft. Beat Adam in week 4's battle of the unbeatens, 150.62 to 136.76. His 12th-round Purdy has outscored nine first-round picks. He also paid $9 for a kicker named Matt Gay, which we're choosing not to look into. Mat, the investigation has been escalated. Please surrender your passport.",t=>[`${t.allw}–${t.alll} all-play`,`${t.eff}% efficiency`,`Purdy: pick 133`]],
- 4:["Fell Off the Parade Float","Adam's first loss came in week 4 against Mat, the one man he ranked above himself, so at least he's consistent. The Seahawks fan now has fewer Seahawks than Mikey and just picked up the Commanders defense, which is Mikey's entire personality. 20 adds, including cutting AJ Barner three separate times. That's not roster management, that's a situationship.",t=>[`${t.w}–${t.l}`,`${t.adds} adds`,`Barner: cut 3×`]],
- 6:["The Charity Case Is 3–1??","Eight trades, −47.1 points on them, the worst ledger in the league. Tetairoa McMillan dropped 45.2 for him in week 4, the best player week of the season, and Zayan traded him to Ryan days later. He's also 3–1 with an 18–26 all-play record, the luckiest team in the league. Zayan doesn't make trades, he makes donations, and the universe keeps mailing him wins as a thank-you note.",t=>[`${t.trades} trades`,`Net: ${f1(t.tradenet)} pts`,`+${f2(t.w-t.xw)} luck`]],
- 11:["Aims Perfectly, Just Not at Toilets","Still the whitest man to ever type 'Njigba Please…'. JSN and Josh Allen have 232 points between them, he has the best trade ledger in the league (+39.9), and he has never made a waiver add. Then he scored 92.42 in week 4 and lost to Beezy by 39. His lineup used to be the only thing Dan aimed correctly. Now it's nothing. Mason has started bringing a towel for his chair.",t=>[`${f1(t.maxpf)} max PF`,`0 adds`,`Trades: +${f1(t.tradenet)}`]],
- 5:["Big Brain, Small Lineup","Happy birthday, Oweenie. One of the smartest people we know, which makes 13 failed waiver claims hard to explain. Eight trades, 180.6 bench points, and a 1.14-point loss to Zayan, of all people, with a 129.12-point lineup on the roster. To be fair, he's won two straight and CeeDee just dropped 41.3 on Mikey. The brain is booting up, slowly, like a laptop from 2009.",t=>[`${t.failed} failed claims`,`${f1(t.bench)} bench pts`,`CeeDee: 41.3 wk 4`]],
- 1:["Mamba Mentality (Shot Selection Edition)","Josh treats the waiver wire like Kobe treated a triple team: shoot anyway. 27 adds and the full $100 FAAB gone. In week 4 he traded for Mason's two best players, Nabers and McCaffrey, then beat Ryan. He also benched Jalen Coker for 33.8 in week 1, the worst bench blunder of the season. Josh will tell you Kobe would have started Coker. Josh, Kobe would have started himself.",t=>[`$${t.faab}/$100 FAAB`,`${t.adds} adds`,`Coker: 33.8 benched`]],
- 3:["Eeyore of the Frozen Tundra","Robel (Beezy to his friends, Eeyore to the rest of us), a sad Packers fan, has left 216.16 points on his bench, the most in the league, a tenth of a point ahead of Oliver. He benched Jared Goff, the GOFF in his own team name, for a 29.78-point week. He has handed out 32 '-iddy' nicknames, which is a grief response. Then he dropped Kyle Pitts and beat Dan by 39. Beezy doesn't play fantasy football. He endures it.",t=>[`${f1(t.bench)} bench pts`,`Goff: 29.78 benched`,`32 "-iddy" names`]],
- 10:["The Luck Ran Out (Your Host)","Ryan rode a 6–27 all-play record to a 2–1 start. Then Josh beat him in week 4 while a 126.22-point lineup sat on his roster. Now he's 2–2 and 8–36 in all-play. His response was to trade Ashton Jeanty, a man he personally nicknamed 'Ashton Jelqy,' to Zayan for three players. Trading with Zayan is the one sure thing in this league. Still has 13 players renamed 'Kyle Pitts.'",t=>[`${t.allw}–${t.alll} all-play`,`Trades: +${f1(t.tradenet)}`,`13× "Kyle Pitts"`]],
- 12:["The Rooney Family Award","Connor (or Gilger, he answers to both) has made zero transactions. No adds, no trades, nothing. Hire once, never fire, die on the hill. The hill is fighting back: he's faced 572.9 points against, the most in the league, and lost week 4 to Zayan when his best lineup would have won by 0.48. Has named 20 different players some version of 'Deion,' including 'Washed Deion' and 'Deion Civilization.' Coach Prime is either honored or concerned.",t=>[`0 moves`,`${f2(t.pa)} PA (most)`,`20 Deions`]],
- 8:["We're Not Repeating What Oliver Said","Oliver finally won in week 4 by beating Mason, the fantasy equivalent of beating your little brother at Mario Kart. Still the worst lineup efficiency in the league (79.9%) and 216.06 points on the bench. His best lineup would have won weeks 1 and 2. We won't print what Oliver says when he's drunk, but based on his lineups it's 'start the Packers D.' He nicknamed Mahomes '1-4,' which was also Oliver's ceiling until Sunday.",t=>[`${f1(t.bench)} bench pts`,`${t.eff}% efficiency`,`GB D/ST: −2.0`]],
- 7:["Cursed, Right on Schedule","Mason's team dies every year, so in week 4 he traded Nabers and McCaffrey to Josh before they could. His team is still named after Nabers. Then he lost to Oliver, who was 0–3, by 5.14 while a 150.24-point lineup sat on his roster. Zero nicknames, because you don't name a pet you know won't make it to Thanksgiving. Even his furniture isn't safe. Ask Dan.",t=>[`−5.14 vs Oliver`,`150.24 possible`,`0 nicknames`]],
- 9:["Commanders Fan, Suffering as Designed","Mikey is 1–3 with the fewest points in the league and the worst all-play record (6–38). His bench could have won him weeks 1 and 3. His first three picks have 30.2 combined points, and in week 4 he dropped De'Von Achane, his first-round pick, outright. As a Commanders fan, Mikey has seen worse. He just can't remember when.",t=>[`${f2(t.pf)} PF (last)`,`R1–R3: 30.2 pts`,`Achane: dropped`]],
+ 2:["Fraud Watch: Bleeding","4–1. All-play 46–9. 96.5% lineup efficiency. Then Josh beat him in week 5 with Jacoby Brissett at quarterback, and Mat lost first place to Adam by 1.12 points. His 12th-round Purdy has still outscored nine first-round picks. He responded by spending $11 on the Patriots defense. The investigation isn't closed, Mat. It's just found its first weakness, and it's Josh.",t=>[`${t.allw}–${t.alll} all-play`,`${t.eff}% efficiency`,`Purdy: pick 133`]],
+ 4:["Back on the Parade Float","Adam is in first place by 1.12 points. He beat Dan 164.70 to 153.20 behind 37.7 from Gibbs, even though he picked up the Raiders defense the day before kickoff and got 0.5 from it. The Seahawks fan cut the Commanders defense, Mikey's entire personality, to make room. 22 adds, including cutting AJ Barner three separate times. That's not roster management, that's a situationship.",t=>[`${t.w}–${t.l} (1st)`,`${t.adds} adds`,`LV D/ST: 0.5`]],
+ 5:["Big Brain, Finally Booted Up","Oweenie has three straight wins, a 158.26 in week 5, and the best trade ledger in the league at +114.2, thanks to Drake Maye, who came over from Mason and just scored 39.46. One of the smartest people we know, which makes 15 failed waiver claims hard to explain. The laptop from 2009 finally finished its updates.",t=>[`Trades: +${f1(t.tradenet)}`,`${t.failed} failed claims`,`Maye: 39.46 wk 5`]],
+ 3:["Eeyore of the Frozen Tundra","Robel (Beezy to his friends, Eeyore to the rest of us) scored 166.54 in week 5, the high of the week, and beat Zayan by 55.4. He got 23.0 from a $1 kicker. He's also left 280.84 points on his bench, 50 more than anyone else. This week he benched Jordan Love, his own team's real-life quarterback. He has handed out 31 '-iddy' nicknames, which is a grief response. Beezy doesn't play fantasy football. He endures it, and lately he's been winning anyway.",t=>[`${f1(t.bench)} bench pts`,`166.54 wk 5`,`31 "-iddy" names`]],
+ 1:["Giant Slayer (Shot Selection Edition)","Josh treats the waiver wire like Kobe treated a triple team: shoot anyway. 32 adds and the full $100 FAAB gone. In week 5, with Mahomes on bye, he picked up Jacoby Brissett, started him against the undefeated champ, and won by 21. Brissett outscored Purdy. Then Josh cut Brissett for a kicker. He also traded for Nabers and McCaffrey in week 4 and has won two straight. Kobe would have shot that shot too.",t=>[`Beat 4–0 Mat`,`${t.adds} adds`,`Brissett: 26.28`]],
+ 6:["The Charity Case Is 3–2","Nine trades. He's won two, lost five, and two were a wash, and he's −61.7 points overall. He traded McMillan right after his 45.2-point week, and he sent Bucky Irving to Ryan right before Irving scored 31.5. One of his two wins came against Mikey, which barely counts. In week 5 he made nine adds, cut T.J. Hockenson two days after picking him up, and lost to Robel by 55.4. Zayan doesn't make trades, he makes donations, and the luckiest all-play record in the league is the thank-you note.",t=>[`${t.trades} trades (2 won)`,`Net: ${f1(t.tradenet)} pts`,`+${f2(t.w-t.xw)} luck`]],
+ 11:["Aims Perfectly, Just Not at Toilets","Still the whitest man to ever type 'Njigba Please…'. 704.22 points, third-most in the league, and he's 2–3 with three straight losses. In week 5 he scored 153.20 and lost. His first transaction of the entire season: cutting Tom Brady, whom he drafted with pick 166, for a receiver Zayan had cut three days earlier. Mason has started bringing a towel for his chair.",t=>[`${f1(t.pf)} PF`,`3-game skid`,`Brady: pick 166`]],
+ 8:["We're Not Repeating What Oliver Said","Oliver has won two straight, over Mason and then Gilger, and is suddenly 2–3. In week 1 he benched Isaiah Likely for 27.8. In week 5 he started him and got 32.4. Still the worst lineup efficiency in the league (83.5%) and 223.06 points on the bench. We won't print what Oliver says when he's drunk, but based on his lineups it's 'start the Packers D.' He nicknamed Mahomes '1-4,' which was also Oliver's ceiling until recently.",t=>[`${f1(t.bench)} bench pts`,`${t.eff}% efficiency`,`Likely: 32.4 wk 5`]],
+ 10:["The Luck Ran Out (Your Host)","Ryan is 2–3 and 11–44 in all-play. In week 5 he benched Jayden Daniels, whom he nicknamed 'Working on his left jelq,' for 32.26, started Burrow's 24.6, and lost to Owen by 44. His best possible lineup still would have lost. The Zayan trade worked, though: Bucky Irving scored 31.5 in his first week. Ryan's +79.5 trade ledger is second-best in the league. Still has 13 players renamed 'Kyle Pitts.'",t=>[`${t.allw}–${t.alll} all-play`,`Trades: +${f1(t.tradenet)}`,`Daniels: 32.26 benched`]],
+ 7:["Cursed, Right on Schedule","Mason's team dies every year, so in week 4 he traded Nabers and McCaffrey to Josh before they could. Nabers scored 29.1 for Josh in week 5. Mason beat Mikey 93.12 to 78.40 in the Toilet Bowl, scoring the second-lowest total of the week and still winning. He also gave Owen Drake Maye, and next week Maye plays against him. Zero nicknames, because you don't name a pet you know won't make it to Thanksgiving.",t=>[`${t.allw}–${t.alll} all-play`,`+${f2(t.w-t.xw)} luck`,`0 nicknames`]],
+ 12:["The Rooney Family Award","Connor (or Gilger, he answers to both) has made zero transactions. No adds, no trades, nothing. Hire once, never fire, die on the hill. The hill is winning. He's faced 712.22 points, the most in the league, he's 1–4, and he lost to Oliver by 4.08 in week 5. Next up is Mikey, with video No. 3 on the line. Has named 20 different players some version of 'Deion,' including 'Washed Deion' and 'Deion Civilization.' Coach Prime is either honored or concerned.",t=>[`0 moves`,`${f2(t.pa)} PA (most)`,`20 Deions`]],
+ 9:["Commanders Fan, Now Filming","Lowest score in week 4. Lowest score in week 5, a 78.40, and even his best possible lineup (89.40) would have finished last. That's two embarrassing videos owed. He's 1–4 with the fewest points in the league and the worst all-play record (6–49). His first three picks have 30.2 combined points, and he cut Achane. He's lost all three of his trades, and his ledger (−126.6) is the worst in the league. Zayan has won exactly two trades all season, and one of them was against Mikey. As a Commanders fan, Mikey has seen worse. He just can't remember when.",t=>[`Videos owed: ${videos}`,`${f2(t.pf)} PF (last)`,`Trades: ${f1(t.tradenet)}`]],
 };
 $('awards').innerHTML=standings.map(t=>{const [title,joke,st]=AW[t.rid];return `<article class="award"><header><span class="t">${esc(t.name)}</span><span class="rec num">${t.w}–${t.l}</span></header><div class="body"><div class="trophy">${esc(who[t.rid])} · @${esc(t.owner)}</div><h4>${esc(title)}</h4><p>${esc(joke)}</p><div class="stats">${st(t).map(x=>`<span>${esc(x)}</span>`).join('')}</div></div></article>`}).join('');
 
@@ -585,7 +677,7 @@ $('awards').innerHTML=standings.map(t=>{const [title,joke,st]=AW[t.rid];return `
 const model=[...teams].sort((a,b)=>b.proj-a.proj||b.pf-a.pf);
 const modelRank=Object.fromEntries(model.map((t,i)=>[t.rid,i+1]));
 bars('model',model.map((t,i)=>({n:`${i+1}. ${tn(t)}`,v:t.proj,c:i<LG.playoffTeams?'var(--turf)':'var(--muted)',tip:`<b>${esc(t.name)}</b><br>Projected: ${f1(t.proj)}–${f1(LG.regWeeks-t.proj)}<br>All-play win rate: ${Math.round(100*t.allw/(t.allw+t.alll))}%`})),{fmt:v=>`${f1(v)}–${f1(LG.regWeeks-v)}`,max:LG.regWeeks,wide:true});
-$('modelcall').innerHTML=`The spreadsheet has Mat finishing around ${f1(T[2].proj)}–${f1(LG.regWeeks-T[2].proj)}, which is either dominance or the biggest fraud in league history. It has Ryan finishing ${modelRank[10]}th, and Adam has him 11th. The spreadsheet doesn't believe in schedule luck. Ryan has built a lifestyle on it.`;
+$('modelcall').innerHTML=`The spreadsheet now has Adam finishing around ${f1(T[4].proj)}–${f1(LG.regWeeks-T[4].proj)}, just ahead of Mat at ${f1(T[2].proj)}–${f1(LG.regWeeks-T[2].proj)}. Adam will tell you he saw it coming. He ranked himself second. It has Ryan finishing ${modelRank[10]}th, and Adam has him 11th. The spreadsheet doesn't believe in schedule luck. Ryan has built a lifestyle on it.`;
 
 let PICKS=DATA.picks||null,pickDb=null,canEdit=false,editing=false,draftOrder=null,draftTakes={};
 function renderPicks(){

@@ -148,10 +148,16 @@ for k, wks in on_roster.items():
 draft = [dict(name=v["name"], pos=v["pos"], pick=v["pick"], rnd=v["rnd"], by=v["by"], pts=round(pts_by.get(k, 0), 2))
          for k, v in info.items()]
 
+# Next week's pairings, for the recap page.
+upcoming = collections.defaultdict(list)
+for m in d["matchups"].get(str(last_week + 1), []):
+    upcoming[m["matchup_id"]].append(m["roster_id"])
+
 data = dict(
     league=dict(name=d["league"]["name"], season=d["league"]["season"], week=last_week, regWeeks=reg_weeks,
                 playoffTeams=d["league"]["settings"]["playoff_teams"]),
     teams=teams, games=games, draft=draft, blown=blown, trades=trade_log,
+    upcoming=[p for p in upcoming.values() if len(p) == 2],
     perfs=sorted(perfs, key=lambda p: -p["pts"])[:5],
     blunders=sorted(blunders, key=lambda p: -p["pts"])[:8],
 )
