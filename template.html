@@ -380,7 +380,7 @@ footer{padding-block:32px 40px;color:var(--muted);font-size:13px;border-top:1px 
       <p class="sub" id="pickmeta">Top 8 make the playoffs · No. 1 is the champ</p>
       <div class="toolbar" id="picktools" hidden></div>
       <div id="picks"></div>
-      <div class="callout">Adam ranked himself 2nd, behind only the reigning champ, the most humble thing he has done since February. He has Oweenie 3rd, two spots above the spreadsheet, presumably as a birthday present. He has Dan 6th, three spots below the spreadsheet, which we can only assume is about Mason's chair. He has Ryan 11th. Ryan built this website, Adam. The website remembers.</div>
+      <div class="callout">Adam spent one week in first place and immediately ranked himself No. 1, ahead of the reigning champ. Humility lasted exactly as long as Mat's unbeaten record. He has Josh 5th, one week after Josh beat the champ, and Oliver 7th, two spots above the spreadsheet, apparently for winning two straight. He has Connor and Ryan 9th and 10th, side by side, just outside the playoffs. Neither of them is worried. In their other league, both have won championships, and Ryan is the defending champ there right now. They know how to win. They're just saving it for the league that matters. Ryan built this website, Adam. The website remembers.</div>
     </div>
     <div class="panel">
       <h3>The spreadsheet's projection</h3>
@@ -677,7 +677,7 @@ $('awards').innerHTML=standings.map(t=>{const [title,joke,st]=AW[t.rid];return `
 const model=[...teams].sort((a,b)=>b.proj-a.proj||b.pf-a.pf);
 const modelRank=Object.fromEntries(model.map((t,i)=>[t.rid,i+1]));
 bars('model',model.map((t,i)=>({n:`${i+1}. ${tn(t)}`,v:t.proj,c:i<LG.playoffTeams?'var(--turf)':'var(--muted)',tip:`<b>${esc(t.name)}</b><br>Projected: ${f1(t.proj)}–${f1(LG.regWeeks-t.proj)}<br>All-play win rate: ${Math.round(100*t.allw/(t.allw+t.alll))}%`})),{fmt:v=>`${f1(v)}–${f1(LG.regWeeks-v)}`,max:LG.regWeeks,wide:true});
-$('modelcall').innerHTML=`The spreadsheet now has Adam finishing around ${f1(T[4].proj)}–${f1(LG.regWeeks-T[4].proj)}, just ahead of Mat at ${f1(T[2].proj)}–${f1(LG.regWeeks-T[2].proj)}. Adam will tell you he saw it coming. He ranked himself second. It has Ryan finishing ${modelRank[10]}th, and Adam has him 11th. The spreadsheet doesn't believe in schedule luck. Ryan has built a lifestyle on it.`;
+$('modelcall').innerHTML=`The spreadsheet now has Adam finishing around ${f1(T[4].proj)}–${f1(LG.regWeeks-T[4].proj)}, just ahead of Mat at ${f1(T[2].proj)}–${f1(LG.regWeeks-T[2].proj)}. Adam will tell you he saw it coming. He ranked himself first. It has Ryan finishing ${modelRank[10]}th, and Adam agrees, which is the first time those two have agreed on anything. The spreadsheet doesn't believe in schedule luck. Ryan has built a lifestyle on it.`;
 
 let PICKS=DATA.picks||null,pickDb=null,canEdit=false,editing=false,draftOrder=null,draftTakes={};
 function renderPicks(){
